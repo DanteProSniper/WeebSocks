@@ -9,7 +9,8 @@ const {Server} = require("socket.io");
 const server = createServer(app);
 const io = new Server(server);
 
-server.listen(3678);
+const port = 3400;
+server.listen(port, _=>{console.log(`http://localhost:${port}`)});
 
 app.get("/", (req, res)=>{
    
