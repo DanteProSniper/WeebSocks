@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+
+
+    <button id = "con">Connect</button>
+
+    <div class="buttons">
+
+    </div>
+
+
+    <script>
+
+        document.querySelector("#con").addEventListener("click", ()=>{
+
+
+
+    
+                let i = Date.now();
+                let button = document.createElement("button");
+                button.id="id_"+i;
+                button.addEventListener("click", (event)=>{
+                    console.log(event.target)
+                });
+                button.innerText = "button "+(i);
+                document.querySelector(".buttons").appendChild(button);
+
+            
+
+
+
+
+        })
+
+
+
+
+        function doStuff(event){
+            console.log(event.target.id);
+        }
+
+    </script>
+
+
+
+    
+</body>
+</html>
