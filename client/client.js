@@ -9,21 +9,23 @@ console.log(clientSocket);
 
 
 
-
-document.querySelector("#sendBtn").addEventListener("click", handleInput);
-document.querySelector("#input").addEventListener("keyup", event=>{
+//gör addeventlistener för den andr aockså
+document.querySelectorAll(".sendBtn").forEach(btn=>btn.addEventListener("click", handleInput));
+document.querySelectorAll(".input").addEventListener("keyup", event=>{
 
 
     console.log(event);
-    if(event.keyCode == 13) handleInput();
+    if(event.keyCode == 13 && event.shiftKey == false) handleInput();
 
 
 })
 function handleInput(event){
-
-    let input = document.querySelector("#input").value.trim();
-
+    
+    let input = document.querySelector(".input").value.trim();
+    
     if(!input) return
+
+    document.querySelector(".input").value = "";
 
    sendMessage(input)
 }
@@ -59,7 +61,7 @@ function printMessage(obj){
     p.innerText = obj.msg;
     div.appendChild(p)
 
-    document.querySelector(".chatContainer").appendChild(div);
+    document.querySelector(".messageArea").appendChild(div);
 
 
 

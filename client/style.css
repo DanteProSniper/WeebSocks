@@ -12,3 +12,32 @@ header{
 h1{
     color: #e5e5e5;
 }
+
+.chat {
+    min-height: 400px;
+    align-content: end;
+}
+
+.inputArea {
+    display:grid;
+    grid-template-columns: auto min-content;
+    gap: 5px;
+}
+
+.sendBtn {
+    padding-inline: 30px;
+}
+
+.allChatContainer {
+    display: grid;
+    grid: auto / repeat(auto-fit, minmax(333px, 1fr));
+    gap: 15px;
+}
+
+.messageArea {
+    height: 100%;
+    align-content: end;
+    border: 2px solid #FCA311;
+    margin-block: 2px;
+    border-radius: 0 0 10px 10px;
+}
