@@ -14,8 +14,10 @@ h1{
 }
 
 .chat {
+    display: grid;
     min-height: 400px;
-    align-content: end;
+    align-items: end;
+    grid-template-rows: min-content auto min-content;
 }
 
 .inputArea {
@@ -31,7 +33,7 @@ h1{
 .allChatContainer {
     display: grid;
     grid: auto / repeat(auto-fit, minmax(333px, 1fr));
-    gap: 55px 15px;
+    gap: 15px;
 }
 
 .messageArea {
@@ -40,4 +42,8 @@ h1{
     border: 2px solid #FCA311;
     margin-block: 2px;
     border-radius: 0 0 10px 10px;
+}
+
+h2 {
+    justify-self: center;
 }
