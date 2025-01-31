@@ -15,29 +15,31 @@ document.querySelectorAll(".input").forEach(btn=>btn.addEventListener("keyup", e
 
 
     
-    if(event.keyCode == 13 && event.shiftKey == false) handleInput();
+    if(event.keyCode == 13 && event.shiftKey == false) handleInput(event);
 
 
 }))
 function handleInput(event){
 
-    console.log(event.srcElement.parentElement.parentElement);
+    let roomID = event.srcElement.parentElement.parentElement.id;
 
-    let input = document.querySelector(".input").value.trim();
+    let input = document.getElementById(roomID).querySelector(".input").value.trim();
     
-    if(!input) return
+    if(!input) return;
 
-    document.querySelector(".input").value = "";
+    document.getElementById(roomID).querySelector(".input").value = "";
 
-   sendMessage(input)
+    
+
+    sendMessage(input, roomID);
 }
 
 
 
-function sendMessage(msg){
+function sendMessage(msg, roomID){
 
 
-    clientSocket.emit("chat", msg);
+    clientSocket.emit("chat", msg, roomID);
 
 }
 
@@ -50,12 +52,6 @@ clientSocket.on("chat", function(obj){
 
 })
 
-clientSocket.on("con", function(msg){
-    console.log(msg);
-})
-
-
-
 function printMessage(obj){
 
     let div = document.createElement("div");
@@ -63,8 +59,15 @@ function printMessage(obj){
     p.innerText = obj.msg;
     div.appendChild(p)
 
-    document.querySelector(".messageArea").appendChild(div);
+    document.getElementById(obj.roomID).querySelector(".messageArea").appendChild(div);
 
 
 
 }
+
+clientSocket.on("con", function(msg){
+    console.log(msg);
+})
+
+
+

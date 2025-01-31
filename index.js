@@ -30,10 +30,10 @@ function handleConnection(socket){
     io.emit("con", socket.id + " connected");
 
 
-    socket.on("chat", function(msg){
+    socket.on("chat", function(msg, roomID){
 
-        console.log(socket.id + ": " + msg);
-        io.emit("chat", {id:socket.id, msg});
+        console.log(socket.id + ": " + msg + " in room " + roomID);
+        io.emit("chat", {id:socket.id, msg, roomID});
 
     });
 
