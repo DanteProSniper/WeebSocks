@@ -11,16 +11,18 @@ console.log(clientSocket);
 
 //gör addeventlistener för den andr aockså
 document.querySelectorAll(".sendBtn").forEach(btn=>btn.addEventListener("click", handleInput));
-document.querySelectorAll(".input").addEventListener("keyup", event=>{
+document.querySelectorAll(".input").forEach(btn=>btn.addEventListener("keyup", event=>{
 
 
-    console.log(event);
+    
     if(event.keyCode == 13 && event.shiftKey == false) handleInput();
 
 
-})
+}))
 function handleInput(event){
-    
+
+    console.log(event.srcElement.parentElement.parentElement);
+
     let input = document.querySelector(".input").value.trim();
     
     if(!input) return
