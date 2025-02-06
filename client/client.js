@@ -33,7 +33,7 @@ function sendMessage(msg, roomID) {
 
 clientSocket.on("chat", function (obj) {
   console.log(obj);
- 
+
   printMessage(obj);
 });
 
@@ -52,3 +52,8 @@ function printMessage(obj) {
 clientSocket.on("con", function (msg) {
   console.log(msg);
 });
+
+
+document.getElementById("createRoomBtn").addEventListener("click", (event) => {
+  
+} )

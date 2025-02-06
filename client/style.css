@@ -15,9 +15,9 @@ h1{
 
 .chat {
     display: grid;
-    min-height: 400px;
+    
     align-items: end;
-    grid-template-rows: min-content auto min-content;
+    grid-template-rows: min-content 400px auto;
 }
 
 .inputArea {
@@ -42,8 +42,19 @@ h1{
     border: 2px solid #FCA311;
     margin-block: 2px;
     border-radius: 0 0 10px 10px;
+    overflow-y: scroll;
 }
 
 h2 {
     justify-self: center;
+}
+
+textarea {
+    resize: none;
+}
+
+.manageRooms {
+    display: grid;
+    grid-template-columns: max-content min-content;
+    justify-content: space-evenly;
 }
