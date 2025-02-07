@@ -9,7 +9,7 @@ document
   .forEach((btn) => btn.addEventListener("click", handleInput));
 document.querySelectorAll(".input").forEach((btn) =>
   btn.addEventListener("keyup", (event) => {
-    if (event.keyCode == 13 && event.shiftKey == false) handleInput(event);
+    if (event.key == "Enter" && event.shiftKey == false) handleInput(event);
   })
 );
 function handleInput(event) {
@@ -53,7 +53,34 @@ clientSocket.on("con", function (msg) {
   console.log(msg);
 });
 
+document
+  .getElementById("createRoom")
+  .querySelector("button")
+  .addEventListener("click", (event) => {
+    handleRoomCreation(event);
+  });
 
-document.getElementById("createRoomBtn").addEventListener("click", (event) => {
-  
-} )
+document
+  .getElementById("createRoom")
+  .querySelector("input")
+  .addEventListener("keyup", (event) => {
+    if (event.key == "Enter" && event.shiftKey == false) {
+      handleRoomCreation(event);
+    }
+  });
+
+function handleRoomCreation(event) {
+  let value = document
+    .getElementById("createRoom")
+    .querySelector("input").value;
+  if (!value) return;
+  document.getElementById("createRoom").querySelector("input").value = "";
+  console.log(value);
+}
+
+document.getElementById("rooms").addEventListener("change", (event) => {
+  let value = document.getElementById("rooms").value;
+  if (!value) return;
+  document.getElementById("rooms").value = "";
+  console.log(value);
+});

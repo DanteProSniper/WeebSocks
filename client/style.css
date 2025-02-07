@@ -58,3 +58,13 @@ textarea {
     grid-template-columns: max-content min-content;
     justify-content: space-evenly;
 }
+
+#joinRoom {
+    display: grid;
+    grid-template-columns: 1fr max-content;
+    gap: 15px;
+}
+
+#joinRoom p {
+    margin: 0;
+}
