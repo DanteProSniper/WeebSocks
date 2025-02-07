@@ -69,6 +69,10 @@ document
     }
   });
 
+document.getElementById("rooms").addEventListener("change", (event) => {
+  joinRoom(event);
+});
+
 function handleRoomCreation(event) {
   let value = document
     .getElementById("createRoom")
@@ -78,9 +82,41 @@ function handleRoomCreation(event) {
   console.log(value);
 }
 
-document.getElementById("rooms").addEventListener("change", (event) => {
+function joinRoom(event) {
   let value = document.getElementById("rooms").value;
   if (!value) return;
   document.getElementById("rooms").value = "";
-  console.log(value);
-});
+  createRoomHTML(value);
+  clientSocket.emit("join", value);
+}
+
+function createRoomHTML(ID){
+  let room = document.createElement("div");
+  room.classList.add("chat");
+  room.id = ID;
+
+  let h2 = document.createElement("h2")
+  h2.innerText = ID;
+
+  room.appendChild(h2);
+
+  let messageArea = document.createElement("div");
+  messageArea.classList.add("messageArea");
+
+  room.appendChild(messageArea);
+
+
+  
+  console.log(room);
+}
+
+/* <div class="chat" id="room1">
+            <h2>ROOM 1</h2>
+            <div class="messageArea">
+
+            </div>
+            <div class="inputArea">
+                <textarea type="text" class = "input" placeholder="Message"></textarea>
+                <button class = "sendBtn">send</button>
+            </div>  
+        </div> */

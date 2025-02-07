@@ -29,4 +29,9 @@ function handleConnection(socket) {
     console.log(socket.id + ": " + msg + " in room " + roomID);
     io.emit("chat", { id: socket.id, msg, roomID });
   });
+
+  socket.on("join", function(room){
+    console.log(room);
+    
+  })
 }
