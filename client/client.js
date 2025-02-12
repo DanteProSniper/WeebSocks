@@ -3,11 +3,11 @@ const clientSocket = io();
 //om jag vill se hela klient objektet
 console.log(clientSocket);
 
-//gör addeventlistener för den andr aockså
+//gör addeventlistener för den andra också
 document
-  .querySelectorAll(".sendBtn")
+  .querySelectorAll(".chat button")
   .forEach((btn) => btn.addEventListener("click", handleInput));
-document.querySelectorAll(".input").forEach((btn) =>
+document.querySelectorAll(".chat textarea").forEach((btn) =>
   btn.addEventListener("keyup", (event) => {
     if (event.key == "Enter" && event.shiftKey == false) handleInput(event);
   })
@@ -17,12 +17,12 @@ function handleInput(event) {
 
   let input = document
     .getElementById(roomID)
-    .querySelector(".input")
+    .querySelector(".chat textarea")
     .value.trim();
 
   if (!input) return;
 
-  document.getElementById(roomID).querySelector(".input").value = "";
+  document.getElementById(roomID).querySelector(".chat textarea").value = "";
 
   sendMessage(input, roomID);
 }
@@ -45,7 +45,7 @@ function printMessage(obj) {
 
   document
     .getElementById(obj.roomID)
-    .querySelector(".messageArea")
+    .querySelector(".chat > div:first-of-type")
     .appendChild(div);
 }
 
@@ -86,11 +86,12 @@ function joinRoom(event) {
   let value = document.getElementById("rooms").value;
   if (!value) return;
   document.getElementById("rooms").value = "";
-  createRoomHTML(value);
+  roomHTML(value);
   clientSocket.emit("join", value);
 }
 
-function createRoomHTML(ID){
+function roomHTML(ID) {
+  /* Detta skapar rummets HTML och placerar det på sidan */
   let room = document.createElement("div");
   room.classList.add("chat");
   room.id = ID;
@@ -100,23 +101,37 @@ function createRoomHTML(ID){
 
   room.appendChild(h2);
 
-  let messageArea = document.createElement("div");
-  messageArea.classList.add("messageArea");
+  room.appendChild(document.createElement("div"));
 
-  room.appendChild(messageArea);
+  let inputArea = document.createElement("div");
+
+  let textarea = document.createElement("textarea");
+  textarea.placeholder = "Message";
+  textarea.addEventListener("keyup", (event) => {
+    if (event.key == "Enter" && event.shiftKey == false) handleInput(event);
+  });
+
+  let button = document.createElement("button");
+  button.innerText = "send";
+  button.addEventListener("click", handleInput);
+
+  inputArea.appendChild(textarea);
+  inputArea.appendChild(button);
+
+  room.appendChild(inputArea);
 
 
-  
-  console.log(room);
+
+  document.querySelector(".allChatContainer").appendChild(room);
 }
 
-/* <div class="chat" id="room1">
-            <h2>ROOM 1</h2>
-            <div class="messageArea">
+/* <div class="chat" id="global">
+     <h2>GLOBAL</h2>
+     <div>
 
-            </div>
-            <div class="inputArea">
-                <textarea type="text" class = "input" placeholder="Message"></textarea>
-                <button class = "sendBtn">send</button>
-            </div>  
-        </div> */
+     </div>
+     <div>
+         <textarea type="text" placeholder="Message"></textarea>
+         <button>send</button>
+     </div>  
+   </div> */
