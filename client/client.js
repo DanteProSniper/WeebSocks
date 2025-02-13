@@ -96,7 +96,7 @@ function roomHTML(ID) {
   room.classList.add("chat");
   room.id = ID;
 
-  let h2 = document.createElement("h2")
+  let h2 = document.createElement("h2");
   h2.innerText = ID;
 
   room.appendChild(h2);
@@ -119,8 +119,6 @@ function roomHTML(ID) {
   inputArea.appendChild(button);
 
   room.appendChild(inputArea);
-
-
 
   document.querySelector(".allChatContainer").appendChild(room);
 }

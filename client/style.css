@@ -1,78 +1,77 @@
-*{
-    font-family: system-ui;
+* {
+  font-family: system-ui;
 }
 
-header{
-    height: 200px;
-    display:grid;
-    place-content: center;
-    background-color: #14213d;
+header {
+  height: 200px;
+  display: grid;
+  place-content: center;
+  background-color: #14213d;
 }
 
-h1{
-    color: #e5e5e5;
+h1 {
+  color: #e5e5e5;
 }
 
 
-
+/* css för rum creation och joining */
 .manageRooms {
-    display: grid;
-    grid-template-columns: max-content min-content;
-    justify-content: space-evenly;
+  display: grid;
+  grid-template-columns: max-content min-content;
+  justify-content: space-evenly;
 }
 
 #joinRoom {
-    display: grid;
-    grid-template-columns: 1fr max-content;
-    gap: 15px;
+  display: grid;
+  grid-template-columns: 1fr max-content;
+  gap: 15px;
 }
 
 #joinRoom p {
-    margin: 0;
+  margin: 0;
 }
 
 
 
 .allChatContainer {
-    display: grid;
-    grid: auto / repeat(auto-fit, minmax(333px, 1fr));
-    gap: 15px;
+  display: grid;
+  grid: auto / repeat(auto-fit, minmax(333px, 1fr));
+  gap: 15px;
 }
 
 
 /* Chatruta css */
 .chat {
-    display: grid;
-    
-    align-items: end;
-    grid-template-rows: min-content 400px auto;
+  display: grid;
+
+  align-items: end;
+  grid-template-rows: min-content 400px auto;
 }
 
 .chat > h2 {
-    justify-self: center;
+  justify-self: center;
 }
 
 .chat > div:first-of-type {
-    height: 100%;
-    align-content: end;
-    border: 2px solid #FCA311;
-    margin-block: 2px;
-    border-radius: 0 0 10px 10px;
-    overflow-y: scroll;
+  height: 100%;
+  align-content: end;
+  border: 2px solid #fca311;
+  margin-block: 2px;
+  border-radius: 0 0 10px 10px;
+  overflow-y: scroll;
 }
 
 .chat > div:nth-of-type(2) {
-    display:grid;
-    grid-template-columns: auto min-content;
-    gap: 5px;
+  display: grid;
+  grid-template-columns: auto min-content;
+  gap: 5px;
 }
 
 .chat textarea {
-    resize: none;
-    overflow: hidden;
+  resize: none;
+  overflow: hidden;
 }
 
 .chat button {
-    padding-inline: 30px;
+  padding-inline: 30px;
 }
-
