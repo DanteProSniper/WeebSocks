@@ -26,11 +26,11 @@ function handleConnection(socket) {
   console.log("A user connected, " + socket.id);
   socket.join("global");
 
-  io.emit("con", socket.id + " connected");
+  io.emit("con", {id: socket.id, roomID: "global"});
 
-  socket.on("chat", function (msg, roomID) {
-    console.log(socket.id + ": " + msg + " in room " + roomID);
-    io.to(roomID).emit("chat", { id: socket.id, msg, roomID});
+  socket.on("chat", function (obj) {
+    console.log(socket.id + ": " + obj.input + " in room " + obj.roomID);
+    io.to(obj.roomID).emit("chat", { id: socket.id, msg: obj.input, roomID: obj.roomID});
   });
 
   socket.on("join", function (roomID) {

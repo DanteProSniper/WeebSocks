@@ -1,17 +1,13 @@
 const clientSocket = io();
 
 //om jag vill se hela klient objektet
-console.log(clientSocket);
+//console.log(clientSocket);
 
-//gör addeventlistener för den andra också
-document
-  .querySelectorAll(".chat button")
-  .forEach((btn) => btn.addEventListener("click", handleInput));
-document.querySelectorAll(".chat textarea").forEach((btn) =>
-  btn.addEventListener("keyup", (event) => {
-    if (event.key == "Enter" && event.shiftKey == false) handleInput(event);
-  })
-);
+document.querySelector(".chat button").addEventListener("click", handleInput);
+document.querySelector(".chat textarea").addEventListener("keyup", (event) => {
+  if (event.key == "Enter" && event.shiftKey == false) handleInput(event);
+});
+
 function handleInput(event) {
   let roomID = event.srcElement.parentElement.parentElement.id;
 
@@ -27,8 +23,9 @@ function handleInput(event) {
   sendMessage(input, roomID);
 }
 
-function sendMessage(msg, roomID) {
-  clientSocket.emit("chat", msg, roomID);
+function sendMessage(input, roomID) {
+  let msg = { input, roomID };
+  clientSocket.emit("chat", msg);
 }
 
 clientSocket.on("chat", function (obj) {
@@ -49,9 +46,15 @@ function printMessage(obj) {
     .appendChild(div);
 }
 
-clientSocket.on("con", function (msg) {
-  console.log(msg);
+clientSocket.on("con", function (newCon) {
+  newUserJoinRoom(newCon);
 });
+
+function newUserJoinRoom(newCon){
+  if (newCon.id == clientSocket.id) return;
+  let obj = { msg: newCon.id + " has connected!", roomID: newCon.roomID };
+  printMessage(obj);
+}
 
 document
   .getElementById("createRoom")
@@ -69,10 +72,6 @@ document
     }
   });
 
-document.getElementById("rooms").addEventListener("change", (event) => {
-  joinRoom(event);
-});
-
 function handleRoomCreation(event) {
   let value = document
     .getElementById("createRoom")
@@ -82,22 +81,24 @@ function handleRoomCreation(event) {
   console.log(value);
 }
 
-function joinRoom(event) {
-  let value = document.getElementById("rooms").value;
-  if (!value) return;
+document.getElementById("rooms").addEventListener("change", joinRoom);
+
+function joinRoom() {
+  let roomID = document.getElementById("rooms").value;
+  if (!roomID) return;
   document.getElementById("rooms").value = "";
-  roomHTML(value);
-  clientSocket.emit("join", value);
+  roomHTML(roomID);
+  clientSocket.emit("join", roomID);
 }
 
-function roomHTML(ID) {
+function roomHTML(roomID) {
   /* Detta skapar rummets HTML och placerar det på sidan */
   let room = document.createElement("div");
   room.classList.add("chat");
-  room.id = ID;
+  room.id = roomID;
 
   let h2 = document.createElement("h2");
-  h2.innerText = ID;
+  h2.innerText = roomID;
 
   room.appendChild(h2);
 
@@ -122,14 +123,3 @@ function roomHTML(ID) {
 
   document.querySelector(".allChatContainer").appendChild(room);
 }
-
-/* <div class="chat" id="global">
-     <h2>GLOBAL</h2>
-     <div>
-
-     </div>
-     <div>
-         <textarea type="text" placeholder="Message"></textarea>
-         <button>send</button>
-     </div>  
-   </div> */
