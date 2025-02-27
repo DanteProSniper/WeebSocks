@@ -40,17 +40,20 @@ function printMessage(obj) {
   p.innerText = obj.msg;
   div.appendChild(p);
 
-  document
+  let msgArea = document
     .getElementById(obj.roomID)
-    .querySelector(".chat > div:first-of-type")
-    .appendChild(div);
+    .querySelector(".chat > div:first-of-type");
+
+  msgArea.appendChild(div);
+
+  msgArea.scrollTop = msgArea.scrollHeight;
 }
 
 clientSocket.on("con", function (newCon) {
   newUserJoinRoom(newCon);
 });
 
-function newUserJoinRoom(newCon){
+function newUserJoinRoom(newCon) {
   if (newCon.id == clientSocket.id) return;
   let obj = { msg: newCon.id + " has connected!", roomID: newCon.roomID };
   printMessage(obj);
