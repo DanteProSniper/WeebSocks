@@ -29,35 +29,37 @@ function sendMessage(input, roomID) {
 }
 
 clientSocket.on("chat", function (obj) {
-  console.log(obj);
-
   printMessage(obj);
 });
 
 function printMessage(obj) {
   let div = document.createElement("div");
   let p = document.createElement("p");
-  p.innerText = obj.msg;
+  p.innerText = obj.id + ": " + obj.msg;
   div.appendChild(p);
-
+  
   let msgArea = document
     .getElementById(obj.roomID)
     .querySelector(".chat > div:first-of-type");
-
   msgArea.appendChild(div);
 
   msgArea.scrollTop = msgArea.scrollHeight;
 }
 
 clientSocket.on("con", function (newCon) {
-  newUserJoinRoom(newCon);
-});
-
-function newUserJoinRoom(newCon) {
+  // en ny användare går med i ett rum
   if (newCon.id == clientSocket.id) return;
   let obj = { msg: newCon.id + " has connected!", roomID: newCon.roomID };
   printMessage(obj);
-}
+});
+
+clientSocket.on("roomArray", function (rooms) {
+  console.log(rooms);
+  /* let option = document.createElement("option");
+  option.value = roomID;
+  option.innerText = roomID;
+  document.getElementById("rooms").appendChild(option); */
+})
 
 document
   .getElementById("createRoom")
@@ -71,18 +73,30 @@ document
   .querySelector("input")
   .addEventListener("keyup", (event) => {
     if (event.key == "Enter" && event.shiftKey == false) {
-      handleRoomCreation(event);
+      handleRoomCreation();
     }
   });
 
-function handleRoomCreation(event) {
-  let value = document
+function handleRoomCreation() {
+  let roomID = document
     .getElementById("createRoom")
-    .querySelector("input").value;
-  if (!value) return;
+    .querySelector("input")
+    .value.trim();
+  if (!roomID) return;
   document.getElementById("createRoom").querySelector("input").value = "";
-  console.log(value);
+  clientSocket.emit("createRoomRequest", roomID);
 }
+
+clientSocket.on("creationApproved", function (roomID) {roomHTML(roomID)});
+
+clientSocket.on("creationDenied", function () {alert("room creation was denied!")});
+
+clientSocket.on("roomCreated", function (roomID) {
+  let option = document.createElement("option");
+  option.value = roomID;
+  option.innerText = roomID;
+  document.getElementById("rooms").appendChild(option);
+});
 
 document.getElementById("rooms").addEventListener("change", joinRoom);
 
@@ -91,7 +105,7 @@ function joinRoom() {
   if (!roomID) return;
   document.getElementById("rooms").value = "";
   roomHTML(roomID);
-  clientSocket.emit("join", roomID);
+  clientSocket.emit("joinRoom", roomID);
 }
 
 function roomHTML(roomID) {

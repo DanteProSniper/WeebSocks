@@ -9,9 +9,8 @@ const { Server } = require("socket.io");
 const server = createServer(app);
 const io = new Server(server);
 
-const port = 3400;
-server.listen(port, (_) => {
-  console.log(`http://localhost:${port}`);
+server.listen(3400, (_) => {
+  console.log("http://localhost:3400");
 });
 // ovanstående är för att starta upp type shi
 
@@ -23,17 +22,34 @@ app.get("/", (req, res) => {
 io.on("connection", handleConnection);
 
 function handleConnection(socket) {
-  console.log("A user connected, " + socket.id);
+  //io.to(socket.id).emit("roomArray", io.sockets.adapter.rooms);
   socket.join("global");
 
-  io.emit("con", {id: socket.id, roomID: "global"});
+  io.emit("con", { id: socket.id, roomID: "global" });
 
   socket.on("chat", function (obj) {
-    console.log(socket.id + ": " + obj.input + " in room " + obj.roomID);
-    io.to(obj.roomID).emit("chat", { id: socket.id, msg: obj.input, roomID: obj.roomID});
+    io.to(obj.roomID).emit("chat", {
+      id: socket.id,
+      msg: obj.input,
+      roomID: obj.roomID,
+    });
   });
 
-  socket.on("join", function (roomID) {
+  socket.on("joinRoom", function (roomID) {
+    io.to(roomID).emit("con", { id: socket.id, roomID });
+
+    socket.join(roomID);
+  });
+
+  socket.on("createRoomRequest", function (roomID) {
+    if (io.sockets.adapter.rooms.get(roomID)) {
+      io.to(socket.id).emit("creationDenied", roomID);
+      return;
+    };
+
+    io.to(socket.id).emit("creationApproved", roomID);
+
+    io.emit("roomCreated", roomID);
     socket.join(roomID);
   });
 }
