@@ -21,9 +21,15 @@ app.get("/", (req, res) => {
 
 io.on("connection", handleConnection);
 
+let rooms = ["raiders"];
+
 function handleConnection(socket) {
-  //io.to(socket.id).emit("roomArray", io.sockets.adapter.rooms);
+  io.to(socket.id).emit("updateRooms", rooms);
   socket.join("global");
+
+
+  
+  //för att se vilka rum en socket är med i: console.log(socket.rooms);
 
   io.emit("con", { id: socket.id, roomID: "global" });
 

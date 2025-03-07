@@ -20,12 +20,8 @@ function handleInput(event) {
 
   document.getElementById(roomID).querySelector(".chat textarea").value = "";
 
-  sendMessage(input, roomID);
-}
-
-function sendMessage(input, roomID) {
-  let msg = { input, roomID };
-  clientSocket.emit("chat", msg);
+  // skickar meddelandet till servern
+  clientSocket.emit("chat", { input, roomID });
 }
 
 clientSocket.on("chat", function (obj) {
@@ -37,7 +33,7 @@ function printMessage(obj) {
   let p = document.createElement("p");
   p.innerText = obj.id + ": " + obj.msg;
   div.appendChild(p);
-  
+
   let msgArea = document
     .getElementById(obj.roomID)
     .querySelector(".chat > div:first-of-type");
@@ -53,13 +49,16 @@ clientSocket.on("con", function (newCon) {
   printMessage(obj);
 });
 
-clientSocket.on("roomArray", function (rooms) {
-  console.log(rooms);
-  /* let option = document.createElement("option");
-  option.value = roomID;
-  option.innerText = roomID;
-  document.getElementById("rooms").appendChild(option); */
-})
+clientSocket.on("updateRooms", function (rooms) {
+  //document.getElementById("rooms").querySelectorAll("option").forEach((option)=>{console.log(option.value)})
+  console.log(document.getElementById());
+  rooms.forEach(roomID => {
+    let option = document.createElement("option");
+    option.value = roomID;
+    option.innerText = roomID;
+    document.getElementById("rooms").appendChild(option);
+  });
+});
 
 document
   .getElementById("createRoom")
@@ -87,9 +86,13 @@ function handleRoomCreation() {
   clientSocket.emit("createRoomRequest", roomID);
 }
 
-clientSocket.on("creationApproved", function (roomID) {roomHTML(roomID)});
+clientSocket.on("creationApproved", function (roomID) {
+  roomHTML(roomID);
+});
 
-clientSocket.on("creationDenied", function () {alert("room creation was denied!")});
+clientSocket.on("creationDenied", function () {
+  alert("room creation was denied!");
+});
 
 clientSocket.on("roomCreated", function (roomID) {
   let option = document.createElement("option");
