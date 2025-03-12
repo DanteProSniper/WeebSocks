@@ -21,10 +21,7 @@ app.get("/", (req, res) => {
 
 io.on("connection", handleConnection);
 
-let rooms = ["raiders"];
-
 function handleConnection(socket) {
-  io.to(socket.id).emit("updateRooms", rooms);
   socket.join("global");
 
 

@@ -49,17 +49,6 @@ clientSocket.on("con", function (newCon) {
   printMessage(obj);
 });
 
-clientSocket.on("updateRooms", function (rooms) {
-  //document.getElementById("rooms").querySelectorAll("option").forEach((option)=>{console.log(option.value)})
-  console.log(document.getElementById());
-  rooms.forEach(roomID => {
-    let option = document.createElement("option");
-    option.value = roomID;
-    option.innerText = roomID;
-    document.getElementById("rooms").appendChild(option);
-  });
-});
-
 document
   .getElementById("createRoom")
   .querySelector("button")
@@ -108,7 +97,7 @@ function joinRoom() {
   if (!roomID) return;
   document.getElementById("rooms").value = "";
   roomHTML(roomID);
-  clientSocket.emit("joinRoom", roomID);
+  clientSocket.emit("JoinRoom", roomID);
 }
 
 function roomHTML(roomID) {
