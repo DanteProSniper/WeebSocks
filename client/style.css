@@ -13,11 +13,10 @@ h1 {
   color: #e5e5e5;
 }
 
-
 /* css för rum creation och joining */
-.manageRooms {
+.manage {
   display: grid;
-  grid-template-columns: max-content min-content;
+  grid-template-columns: repeat(3, max-content);
   justify-content: space-evenly;
 }
 
@@ -27,18 +26,21 @@ h1 {
   gap: 15px;
 }
 
-#joinRoom p {
-  margin: 0;
+.manage > div:last-of-type {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  gap: 1rem;
 }
 
-
+.manage p {
+  margin: 0;
+}
 
 .allChatContainer {
   display: grid;
   grid: auto / repeat(auto-fit, minmax(333px, 1fr));
   gap: 15px;
 }
-
 
 /* Chatruta css */
 .chat {

@@ -23,17 +23,12 @@ io.on("connection", handleConnection);
 
 function handleConnection(socket) {
   socket.join("global");
-
-
-  
-  //för att se vilka rum en socket är med i: console.log(socket.rooms);
-
-  io.emit("con", { id: socket.id, roomID: "global" });
+  io.to(socket.id).emit("updateUserID", socket.id);
+  io.emit("chat", { msg: socket.id + " has connected!", roomID: "global" });
 
   socket.on("chat", function (obj) {
     io.to(obj.roomID).emit("chat", {
-      id: socket.id,
-      msg: obj.input,
+      msg: socket.id + ": " + obj.input,
       roomID: obj.roomID,
     });
   });
@@ -48,7 +43,7 @@ function handleConnection(socket) {
     if (io.sockets.adapter.rooms.get(roomID)) {
       io.to(socket.id).emit("creationDenied", roomID);
       return;
-    };
+    }
 
     io.to(socket.id).emit("creationApproved", roomID);
 

@@ -1,5 +1,9 @@
 const clientSocket = io();
 
+clientSocket.on("updateUserID", function (userID){
+  document.querySelector(".displayUserID").innerText = userID;
+})
+
 //om jag vill se hela klient objektet
 //console.log(clientSocket);
 
@@ -31,7 +35,7 @@ clientSocket.on("chat", function (obj) {
 function printMessage(obj) {
   let div = document.createElement("div");
   let p = document.createElement("p");
-  p.innerText = obj.id + ": " + obj.msg;
+  p.innerText = obj.msg;
   div.appendChild(p);
 
   let msgArea = document
@@ -41,13 +45,6 @@ function printMessage(obj) {
 
   msgArea.scrollTop = msgArea.scrollHeight;
 }
-
-clientSocket.on("con", function (newCon) {
-  // en ny användare går med i ett rum
-  if (newCon.id == clientSocket.id) return;
-  let obj = { msg: newCon.id + " has connected!", roomID: newCon.roomID };
-  printMessage(obj);
-});
 
 document
   .getElementById("createRoom")
