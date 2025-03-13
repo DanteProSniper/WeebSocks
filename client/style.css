@@ -18,6 +18,8 @@ h1 {
   display: grid;
   grid-template-columns: repeat(3, max-content);
   justify-content: space-evenly;
+  padding-block: 7px;
+  border: 2px solid #e5e5e5;
 }
 
 #joinRoom {

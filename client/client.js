@@ -73,7 +73,7 @@ function handleRoomCreation() {
 }
 
 clientSocket.on("creationApproved", function (roomID) {
-  roomHTML(roomID);
+  addRoomToHTML(roomID);
 });
 
 clientSocket.on("creationDenied", function () {
@@ -93,11 +93,11 @@ function joinRoom() {
   let roomID = document.getElementById("rooms").value;
   if (!roomID) return;
   document.getElementById("rooms").value = "";
-  roomHTML(roomID);
+  addRoomToHTML(roomID);
   clientSocket.emit("JoinRoom", roomID);
 }
 
-function roomHTML(roomID) {
+function addRoomToHTML(roomID) {
   /* Detta skapar rummets HTML och placerar det på sidan */
   let room = document.createElement("div");
   room.classList.add("chat");

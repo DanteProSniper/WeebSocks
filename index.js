@@ -15,9 +15,13 @@ server.listen(3400, (_) => {
 // ovanstående är för att starta upp type shi
 
 // this stuff är annat type shi
+const fs = require("fs");
+
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/chat.html");
 });
+
+//fs.writeFileSync("rooms.json", "[]");
 
 io.on("connection", handleConnection);
 
