@@ -26,21 +26,22 @@ app.get("/", (req, res) => {
 io.on("connection", handleConnection);
 
 function handleConnection(socket) {
-  socket.join("global");
+  //gör att socketen kan uppdatera det visade användar id:t
   io.to(socket.id).emit("updateUserID", socket.id);
+  socket.join("global");
+  addUserToRoom("global", socket.id);
+  //skickar chattmeddelanden till användare
+  //KEEEP GOING UNDER HERE!!! UNDER WHERE? HAHAHHAHA MADE YOU SAY UNDERWEAR!!!! HADHABVDSAJHDSAVDSAJDVSAHGDVSAJHGVDHSAVDHGSADHGSAVDHGSACHDVCHDSA
+  //io.to(socket.id).emit("msg", )
+  //skickar till alla i rummet global att en ny user går med i global
   io.emit("chat", { msg: socket.id + " has connected!", roomID: "global" });
 
   socket.on("chat", function (obj) {
+    let msg = socket.id + ": " + obj.input
     io.to(obj.roomID).emit("chat", {
-      msg: socket.id + ": " + obj.input,
+      msg,
       roomID: obj.roomID,
     });
-  });
-
-  socket.on("joinRoom", function (roomID) {
-    io.to(roomID).emit("con", { id: socket.id, roomID });
-
-    socket.join(roomID);
   });
 
   socket.on("createRoomRequest", function (roomID) {
@@ -54,4 +55,22 @@ function handleConnection(socket) {
     io.emit("roomCreated", roomID);
     socket.join(roomID);
   });
+
+  socket.on("joinRoom", function (roomID) {
+    io.to(roomID).emit("con", { id: socket.id, roomID });
+
+    socket.join(roomID);
+  });
+}
+
+
+function addUserToRoom(room, user){
+
+  let allRooms = JSON.parse(fs.readFileSync("rooms.json").toString());
+  let targetRoom = allRooms.find((r) => r.room == room);
+  targetRoom.connectedUsers.push(user);
+  console.log(allRooms);
+  fs.writeFileSync("rooms.json", JSON.stringify(allRooms), null, 3);
+  
+  
 }
