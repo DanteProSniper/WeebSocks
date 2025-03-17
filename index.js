@@ -21,7 +21,7 @@ app.get("/", (req, res) => {
   res.sendFile(__dirname + "/chat.html");
 });
 
-//fs.writeFileSync("rooms.json", "[]");
+
 
 io.on("connection", handleConnection);
 
@@ -31,46 +31,84 @@ function handleConnection(socket) {
   socket.join("global");
   addUserToRoom("global", socket.id);
   //skickar chattmeddelanden till användare
-  //KEEEP GOING UNDER HERE!!! UNDER WHERE? HAHAHHAHA MADE YOU SAY UNDERWEAR!!!! HADHABVDSAJHDSAVDSAJDVSAHGDVSAJHGVDHSAVDHGSADHGSAVDHGSACHDVCHDSA
-  //io.to(socket.id).emit("msg", )
+  io.to(socket.id).emit("roomLogs", { room: "global", logs: getRoomLogs("global") })
   //skickar till alla i rummet global att en ny user går med i global
-  io.emit("chat", { msg: socket.id + " has connected!", roomID: "global" });
+  io.emit("chat", { msg: socket.id + " has connected!", room: "global" });
+  logMsg("global", socket.id + " has connected!");
+
 
   socket.on("chat", function (obj) {
+
+    logMsg(obj.room, obj.input);
+
     let msg = socket.id + ": " + obj.input
-    io.to(obj.roomID).emit("chat", {
+    io.to(obj.room).emit("chat", {
       msg,
-      roomID: obj.roomID,
+      room: obj.room,
     });
   });
 
-  socket.on("createRoomRequest", function (roomID) {
-    if (io.sockets.adapter.rooms.get(roomID)) {
-      io.to(socket.id).emit("creationDenied", roomID);
+  socket.on("createRoomRequest", function (room) {
+    if (io.sockets.adapter.rooms.get(room)) {
+      io.to(socket.id).emit("creationDenied", room);
       return;
     }
 
-    io.to(socket.id).emit("creationApproved", roomID);
+    makeRoom(room);
 
-    io.emit("roomCreated", roomID);
-    socket.join(roomID);
+    io.to(socket.id).emit("creationApproved", room);
+
+    io.emit("roomCreated", room);
   });
 
-  socket.on("joinRoom", function (roomID) {
-    io.to(roomID).emit("con", { id: socket.id, roomID });
+  socket.on("joinRoom", function (room) {
 
-    socket.join(roomID);
+    socket.join(room);
+
+    io.to(room).emit("con", { id: socket.id, room });
+
+    
   });
 }
 
 
-function addUserToRoom(room, user){
+function addUserToRoom(room, user) {
 
-  let allRooms = JSON.parse(fs.readFileSync("rooms.json").toString());
+  let allRooms = getRooms();
   let targetRoom = allRooms.find((r) => r.room == room);
   targetRoom.connectedUsers.push(user);
-  console.log(allRooms);
-  fs.writeFileSync("rooms.json", JSON.stringify(allRooms), null, 3);
-  
-  
+  fs.writeFileSync("rooms.json", JSON.stringify(allRooms, null, 3));
+
+
+}
+
+function getRoomLogs(room) {
+
+  let allRooms = getRooms();
+  let targetRoom = allRooms.find((r) => r.room == room);
+  return targetRoom.logs;
+
+}
+
+function logMsg(room, msg) {
+  let allRooms = getRooms();
+  let targetRoom = allRooms.find((r) => r.room == room);
+  let logs = targetRoom.logs;
+  logs.push(msg);
+
+  fs.writeFileSync("rooms.json", JSON.stringify(allRooms, null, 3));
+}
+
+function getRooms() {
+  return JSON.parse(fs.readFileSync("rooms.json").toString());
+}
+
+function makeRoom(room) {
+  let allRooms = getRooms();
+
+  let newRoom = { room: room, connectedUsers: [], logs: [] };
+
+  allRooms.push(newRoom);
+
+  fs.writeFileSync("rooms.json", JSON.stringify(allRooms, null, 3));
 }

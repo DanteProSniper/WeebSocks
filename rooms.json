@@ -1,1 +1,44 @@
-[{"room":"global","connectedUsers":["tjolle","NS4fE1__0HwHQx_aAAAB","MU-hNjWqXXAXHA9xAAAB","yRi95dV0xDYsciwFAAAB"],"logs":["det var en gång en liten fågel ja en fågel"]}]
+[
+   {
+      "room": "global",
+      "connectedUsers": [
+         "tjolle",
+         "m1Zd03TP6udXahHnAAAF",
+         "1tt-e8pHQvcOugU7AAAH",
+         "tPAPv-3bNU4WIDghAAAJ",
+         "_zJMtV_GupGSW9WmAAAL",
+         "DNu0iXnX0-_zxe9PAAAB",
+         "-Gv39-9-P7rjmF0EAAAB",
+         "OwBo206QkO6uayP4AAAD"
+      ],
+      "logs": [
+         "det var en gång en liten fågel ja en fågel",
+         "han bodde på landet o roger hette han",
+         "m1Zd03TP6udXahHnAAAF has connected!",
+         "1tt-e8pHQvcOugU7AAAH has connected!",
+         "tPAPv-3bNU4WIDghAAAJ has connected!",
+         "_zJMtV_GupGSW9WmAAAL has connected!",
+         "DNu0iXnX0-_zxe9PAAAB has connected!",
+         "-Gv39-9-P7rjmF0EAAAB has connected!",
+         "hey",
+         "OwBo206QkO6uayP4AAAD has connected!"
+      ]
+   },
+   {
+      "room": "dfghdfg",
+      "connectedUsers": [],
+      "logs": []
+   },
+   {
+      "room": "lololo",
+      "connectedUsers": [],
+      "logs": [
+         "asd"
+      ]
+   },
+   {
+      "room": "lolo",
+      "connectedUsers": [],
+      "logs": []
+   }
+]

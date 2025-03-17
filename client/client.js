@@ -1,11 +1,15 @@
 const clientSocket = io();
 
-clientSocket.on("updateUserID", function (userID){
+clientSocket.on("updateUserID", function (userID) {
   document.querySelector(".displayUserID").innerText = userID;
 })
 
-//om jag vill se hela klient objektet
-//console.log(clientSocket);
+clientSocket.on("roomLogs", function (obj) {
+  obj.logs.forEach(msg => {
+    printMessage({ msg, room: obj.room })
+
+  });
+})
 
 document.querySelector(".chat button").addEventListener("click", handleInput);
 document.querySelector(".chat textarea").addEventListener("keyup", (event) => {
@@ -13,23 +17,24 @@ document.querySelector(".chat textarea").addEventListener("keyup", (event) => {
 });
 
 function handleInput(event) {
-  let roomID = event.srcElement.parentElement.parentElement.id;
+  let room = event.srcElement.parentElement.parentElement.id;
 
   let input = document
-    .getElementById(roomID)
+    .getElementById(room)
     .querySelector(".chat textarea")
     .value.trim();
 
   if (!input) return;
 
-  document.getElementById(roomID).querySelector(".chat textarea").value = "";
+  document.getElementById(room).querySelector(".chat textarea").value = "";
 
   // skickar meddelandet till servern
-  clientSocket.emit("chat", { input, roomID });
+  clientSocket.emit("chat", { input, room });
 }
 
 clientSocket.on("chat", function (obj) {
   printMessage(obj);
+
 });
 
 function printMessage(obj) {
@@ -39,8 +44,8 @@ function printMessage(obj) {
   div.appendChild(p);
 
   let msgArea = document
-    .getElementById(obj.roomID)
-    .querySelector(".chat > div:first-of-type");
+    .getElementById(obj.room)
+    .querySelector("div");
   msgArea.appendChild(div);
 
   msgArea.scrollTop = msgArea.scrollHeight;
@@ -63,52 +68,53 @@ document
   });
 
 function handleRoomCreation() {
-  let roomID = document
+  let room = document
     .getElementById("createRoom")
     .querySelector("input")
     .value.trim();
-  if (!roomID) return;
+  if (!room) return;
   document.getElementById("createRoom").querySelector("input").value = "";
-  clientSocket.emit("createRoomRequest", roomID);
+  clientSocket.emit("createRoomRequest", room);
 }
 
-clientSocket.on("creationApproved", function (roomID) {
-  addRoomToHTML(roomID);
+clientSocket.on("creationApproved", function (room) {
+  addRoomToHTML(room);
+  clientSocket.emit("joinRoom", room);
 });
 
 clientSocket.on("creationDenied", function () {
   alert("room creation was denied!");
 });
 
-clientSocket.on("roomCreated", function (roomID) {
+clientSocket.on("roomCreated", function (room) {
   let option = document.createElement("option");
-  option.value = roomID;
-  option.innerText = roomID;
+  option.value = room;
+  option.innerText = room;
   document.getElementById("rooms").appendChild(option);
 });
 
 document.getElementById("rooms").addEventListener("change", joinRoom);
 
 function joinRoom() {
-  let roomID = document.getElementById("rooms").value;
-  if (!roomID) return;
+  let room = document.getElementById("rooms").value;
+  if (!room) return;
   document.getElementById("rooms").value = "";
-  addRoomToHTML(roomID);
-  clientSocket.emit("JoinRoom", roomID);
+  addRoomToHTML(room);
+  clientSocket.emit("joinRoom", room);
 }
 
 function addRoomToHTML(roomID) {
   /* Detta skapar rummets HTML och placerar det på sidan */
-  let room = document.createElement("div");
-  room.classList.add("chat");
-  room.id = roomID;
+  let HTML = document.createElement("div");
+  HTML.classList.add("chat");
+  HTML.id = roomID;
 
   let h2 = document.createElement("h2");
   h2.innerText = roomID;
 
-  room.appendChild(h2);
+  HTML.appendChild(h2);
 
-  room.appendChild(document.createElement("div"));
+  HTML.appendChild(document.createElement("div"));
 
   let inputArea = document.createElement("div");
 
@@ -125,7 +131,7 @@ function addRoomToHTML(roomID) {
   inputArea.appendChild(textarea);
   inputArea.appendChild(button);
 
-  room.appendChild(inputArea);
+  HTML.appendChild(inputArea);
 
-  document.querySelector(".allChatContainer").appendChild(room);
+  document.querySelector(".allChatContainer").appendChild(HTML);
 }
