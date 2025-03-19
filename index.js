@@ -28,10 +28,11 @@ io.on("connection", handleConnection);
 function handleConnection(socket) {
   //gör att socketen kan uppdatera det visade användar id:t
   io.to(socket.id).emit("updateUserID", socket.id);
+  io.to(socket.id).emit("updateJoinableRooms", getArrayOfRooms());
   socket.join("global");
   addUserToRoom("global", socket.id);
   //skickar chattmeddelanden till användare
-  io.to(socket.id).emit("roomLogs", { room: "global", logs: getRoomLogs("global") })
+  io.to(socket.id).emit("roomLogs", { room: "global", logs: getRoomLogs("global") });
   //skickar till alla i rummet global att en ny user går med i global
   io.emit("chat", { msg: socket.id + " has connected!", room: "global" });
   logMsg("global", socket.id + " has connected!");
@@ -56,18 +57,18 @@ function handleConnection(socket) {
 
     makeRoom(room);
 
+    addUserToRoom(room, socket.id);
+
     io.to(socket.id).emit("creationApproved", room);
 
-    io.emit("roomCreated", room);
+    io.emit("updateJoinableRooms", getArrayOfRooms());
   });
 
   socket.on("joinRoom", function (room) {
 
     socket.join(room);
 
-    io.to(room).emit("con", { id: socket.id, room });
-
-    
+    io.to(room).emit("chat", { msg: socket.id + " has connected!", room: room });
   });
 }
 
@@ -111,4 +112,15 @@ function makeRoom(room) {
   allRooms.push(newRoom);
 
   fs.writeFileSync("rooms.json", JSON.stringify(allRooms, null, 3));
+}
+
+function getArrayOfRooms() {
+
+  let ArrayOfRooms = [];
+  let allRooms = getRooms();
+  allRooms.forEach(room => {
+    ArrayOfRooms.push(room.room);
+  });
+
+  return ArrayOfRooms;
 }

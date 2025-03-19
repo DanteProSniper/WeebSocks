@@ -3,42 +3,84 @@
       "room": "global",
       "connectedUsers": [
          "tjolle",
-         "m1Zd03TP6udXahHnAAAF",
-         "1tt-e8pHQvcOugU7AAAH",
-         "tPAPv-3bNU4WIDghAAAJ",
-         "_zJMtV_GupGSW9WmAAAL",
-         "DNu0iXnX0-_zxe9PAAAB",
-         "-Gv39-9-P7rjmF0EAAAB",
-         "OwBo206QkO6uayP4AAAD"
+         "lo7eSlfok6ZTNk7BAAAB",
+         "o6NYbGZiFGja8sNTAAAD",
+         "ZRBBdP7PFLhIFARbAAAB",
+         "0AmwkjuPCBMEFCxVAAAB",
+         "rXwU2jAZdsBgyneHAAAB",
+         "Zd6YT3CTcY8W6D-BAAAB",
+         "0uKQymV8yw6OtE-2AAAD",
+         "-MOYXhUF1Go255FiAAAF",
+         "LvwKf44schSRF-6WAAAH",
+         "ICzbXcaI_rX2KhFQAAAC",
+         "1Hhf_Jy6-bA2PuO3AAAD",
+         "v323V2KVgNabQF8YAAAC",
+         "Gb5cwptiYWjK4zW8AAAD",
+         "W51rr5lJQ8GEs7tGAAAF",
+         "yU3hQfed36DFKdHOAAAB",
+         "g9vchIWZeN3Rzw8sAAAD",
+         "UPQHUcdisoxaKGwJAAAB",
+         "xQudPaBYUXiGOKu9AAAD",
+         "rYK6-S2WZNaY3z5SAAAC",
+         "JdPVHEXNu78wYPIyAAAD",
+         "7_I1pbrmIKOkfuwrAAAC",
+         "3VhYAKGRsg5PemyNAAAD",
+         "dHMfNlBvYn3zB18jAAAB",
+         "nGayLUUuJF7GGY1-AAAD",
+         "DlDLrimYeTJGNZ2FAAAC",
+         "TBf87r1po8ykTAAsAAAD",
+         "Liqv3u7YJ7SpHA-9AAAC",
+         "oETkq3LkBeYtVKZNAAAD",
+         "agEgmXQpAxBfp9UZAAAF",
+         "EBgNg8I8sLnu8uC6AAAH"
       ],
       "logs": [
          "det var en gång en liten fågel ja en fågel",
          "han bodde på landet o roger hette han",
-         "m1Zd03TP6udXahHnAAAF has connected!",
-         "1tt-e8pHQvcOugU7AAAH has connected!",
-         "tPAPv-3bNU4WIDghAAAJ has connected!",
-         "_zJMtV_GupGSW9WmAAAL has connected!",
-         "DNu0iXnX0-_zxe9PAAAB has connected!",
-         "-Gv39-9-P7rjmF0EAAAB has connected!",
-         "hey",
-         "OwBo206QkO6uayP4AAAD has connected!"
+         "lo7eSlfok6ZTNk7BAAAB has connected!",
+         "o6NYbGZiFGja8sNTAAAD has connected!",
+         "ZRBBdP7PFLhIFARbAAAB has connected!",
+         "0AmwkjuPCBMEFCxVAAAB has connected!",
+         "rXwU2jAZdsBgyneHAAAB has connected!",
+         "Zd6YT3CTcY8W6D-BAAAB has connected!",
+         "0uKQymV8yw6OtE-2AAAD has connected!",
+         "-MOYXhUF1Go255FiAAAF has connected!",
+         "LvwKf44schSRF-6WAAAH has connected!",
+         "ICzbXcaI_rX2KhFQAAAC has connected!",
+         "1Hhf_Jy6-bA2PuO3AAAD has connected!",
+         "v323V2KVgNabQF8YAAAC has connected!",
+         "Gb5cwptiYWjK4zW8AAAD has connected!",
+         "W51rr5lJQ8GEs7tGAAAF has connected!",
+         "yU3hQfed36DFKdHOAAAB has connected!",
+         "g9vchIWZeN3Rzw8sAAAD has connected!",
+         "UPQHUcdisoxaKGwJAAAB has connected!",
+         "xQudPaBYUXiGOKu9AAAD has connected!",
+         "rYK6-S2WZNaY3z5SAAAC has connected!",
+         "JdPVHEXNu78wYPIyAAAD has connected!",
+         "7_I1pbrmIKOkfuwrAAAC has connected!",
+         "3VhYAKGRsg5PemyNAAAD has connected!",
+         "dHMfNlBvYn3zB18jAAAB has connected!",
+         "nGayLUUuJF7GGY1-AAAD has connected!",
+         "DlDLrimYeTJGNZ2FAAAC has connected!",
+         "TBf87r1po8ykTAAsAAAD has connected!",
+         "Liqv3u7YJ7SpHA-9AAAC has connected!",
+         "oETkq3LkBeYtVKZNAAAD has connected!",
+         "agEgmXQpAxBfp9UZAAAF has connected!",
+         "EBgNg8I8sLnu8uC6AAAH has connected!"
       ]
    },
    {
-      "room": "dfghdfg",
+      "room": "efhg",
       "connectedUsers": [],
       "logs": []
    },
    {
-      "room": "lololo",
-      "connectedUsers": [],
+      "room": "fcghjgfd",
+      "connectedUsers": [
+         "0uKQymV8yw6OtE-2AAAD"
+      ],
       "logs": [
-         "asd"
+         "dikdkj"
       ]
-   },
-   {
-      "room": "lolo",
-      "connectedUsers": [],
-      "logs": []
    }
 ]

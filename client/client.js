@@ -2,14 +2,33 @@ const clientSocket = io();
 
 clientSocket.on("updateUserID", function (userID) {
   document.querySelector(".displayUserID").innerText = userID;
-})
+});
+
+clientSocket.on("updateJoinableRooms", function (array) {
+  let optionElements = document.getElementById("joinRoom").querySelectorAll("option");
+  let optionValues = [];
+
+  optionElements.forEach(element => {
+    optionValues.push(element.value);
+  });
+
+  console.log(optionValues);
+
+  array.forEach(room => {
+    if (!optionValues.find((opt) => opt == room)) {
+      let option = document.createElement("option");
+      option.value = room;
+      option.innerText = room;
+      document.getElementById("rooms").appendChild(option);
+    };
+  });
+});
 
 clientSocket.on("roomLogs", function (obj) {
   obj.logs.forEach(msg => {
     printMessage({ msg, room: obj.room })
-
   });
-})
+});
 
 document.querySelector(".chat button").addEventListener("click", handleInput);
 document.querySelector(".chat textarea").addEventListener("keyup", (event) => {
@@ -86,19 +105,16 @@ clientSocket.on("creationDenied", function () {
   alert("room creation was denied!");
 });
 
-clientSocket.on("roomCreated", function (room) {
-  let option = document.createElement("option");
-  option.value = room;
-  option.innerText = room;
-  document.getElementById("rooms").appendChild(option);
-});
-
 document.getElementById("rooms").addEventListener("change", joinRoom);
 
 function joinRoom() {
   let room = document.getElementById("rooms").value;
   if (!room) return;
   document.getElementById("rooms").value = "";
+  if (document.getElementById(room)) {
+    alert("already connected to room");
+    return;
+  };
   addRoomToHTML(room);
   clientSocket.emit("joinRoom", room);
 }
