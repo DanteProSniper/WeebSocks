@@ -40,7 +40,7 @@ function handleConnection(socket) {
 
   socket.on("chat", function (obj) {
 
-    logMsg(obj.room, obj.input);
+    logMsg(obj.room, socket.id + ": " + obj.input);
 
     let msg = socket.id + ": " + obj.input
     io.to(obj.room).emit("chat", {
@@ -64,11 +64,21 @@ function handleConnection(socket) {
     io.emit("updateJoinableRooms", getArrayOfRooms());
   });
 
-  socket.on("joinRoom", function (room) {
+  socket.on("joinRoomRequest", function (room) {
+
+    if (socket.rooms.has(room)) {
+      io.to(socket.id).emit("joinDenied");
+      return;
+    }
 
     socket.join(room);
 
+    io.to(socket.id).emit("joinApproved", room);
+    
+    io.to(socket.id).emit("roomLogs", { room: room, logs: getRoomLogs(room) });
+
     io.to(room).emit("chat", { msg: socket.id + " has connected!", room: room });
+    logMsg(room, socket.id + " has connected!");
   });
 }
 

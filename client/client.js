@@ -12,8 +12,6 @@ clientSocket.on("updateJoinableRooms", function (array) {
     optionValues.push(element.value);
   });
 
-  console.log(optionValues);
-
   array.forEach(room => {
     if (!optionValues.find((opt) => opt == room)) {
       let option = document.createElement("option");
@@ -97,8 +95,7 @@ function handleRoomCreation() {
 }
 
 clientSocket.on("creationApproved", function (room) {
-  addRoomToHTML(room);
-  clientSocket.emit("joinRoom", room);
+  clientSocket.emit("joinRoomRequest", room);
 });
 
 clientSocket.on("creationDenied", function () {
@@ -111,13 +108,17 @@ function joinRoom() {
   let room = document.getElementById("rooms").value;
   if (!room) return;
   document.getElementById("rooms").value = "";
-  if (document.getElementById(room)) {
-    alert("already connected to room");
-    return;
-  };
+  
+  clientSocket.emit("joinRoomRequest", room);
+};
+
+clientSocket.on("joinApproved", function (room) {
   addRoomToHTML(room);
-  clientSocket.emit("joinRoom", room);
-}
+});
+
+clientSocket.on("joinDenied", function () {
+  alert("You were not allowed to join room!");
+});
 
 function addRoomToHTML(roomID) {
   /* Detta skapar rummets HTML och placerar det på sidan */
