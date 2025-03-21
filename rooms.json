@@ -2,12 +2,38 @@
    {
       "room": "global",
       "connectedUsers": [
-         "tBoEj-cE8J_6BCF-AAAF",
-         "d4XOAulCuAZTtz1VAAAH"
+         "V94aSYHIwgcxdENXAAAD",
+         "rTm4RN2fger6weF1AAAF",
+         "lhGGR79qO6t4MgRFAAAB",
+         "x_V85TbmXqZqZ88oAAAB",
+         "Tv3RrNznhfAvIrSxAAAB",
+         "vZ1xQbOk29m5U2-9AAAB"
       ],
       "logs": [
-         "tBoEj-cE8J_6BCF-AAAF has connected!",
-         "d4XOAulCuAZTtz1VAAAH has connected!"
+         "V94aSYHIwgcxdENXAAAD has connected!",
+         "rTm4RN2fger6weF1AAAF has connected!",
+         "lhGGR79qO6t4MgRFAAAB has connected!",
+         "x_V85TbmXqZqZ88oAAAB has connected!",
+         "Tv3RrNznhfAvIrSxAAAB has connected!",
+         "vZ1xQbOk29m5U2-9AAAB has connected!"
+      ]
+   },
+   {
+      "room": "sadf",
+      "connectedUsers": [
+         "V94aSYHIwgcxdENXAAAD"
+      ],
+      "logs": [
+         "V94aSYHIwgcxdENXAAAD has connected!"
+      ]
+   },
+   {
+      "room": "hjkl",
+      "connectedUsers": [
+         "V94aSYHIwgcxdENXAAAD"
+      ],
+      "logs": [
+         "V94aSYHIwgcxdENXAAAD has connected!"
       ]
    }
 ]
