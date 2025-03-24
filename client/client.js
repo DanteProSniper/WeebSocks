@@ -94,10 +94,6 @@ function handleRoomCreation() {
   clientSocket.emit("createRoomRequest", room);
 }
 
-clientSocket.on("creationApproved", function (room) {
-  clientSocket.emit("joinRoomRequest", room);
-});
-
 clientSocket.on("creationDenied", function () {
   alert("room creation was denied!");
 });

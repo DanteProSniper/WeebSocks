@@ -28,9 +28,11 @@ function handleConnection(socket) {
   io.to(socket.id).emit("updateUserID", socket.id);
   socket.join("global");
   //uppdaterar användarens select element med options
-  io.to(socket.id).emit("updateJoinableRooms", getArrayOfRooms(io.sockets.adapter.rooms));
+  io.to(socket.id).emit(
+    "updateJoinableRooms",
+    getArrayOfRooms(io.sockets.adapter.rooms)
+  );
 
-  addUserToRoom("global", socket.id);
   //skickar chattmeddelanden till användare
   io.to(socket.id).emit("roomLogs", {
     room: "global",
@@ -40,12 +42,11 @@ function handleConnection(socket) {
   io.emit("chat", { msg: socket.id + " has connected!", room: "global" });
   logMsg("global", socket.id + " has connected!");
 
-  
-
   socket.on("chat", function (obj) {
-    logMsg(obj.room, socket.id + ": " + obj.input);
-
     let msg = socket.id + ": " + obj.input;
+
+    logMsg(obj.room, msg);
+
     io.to(obj.room).emit("chat", {
       msg,
       room: obj.room,
@@ -58,11 +59,19 @@ function handleConnection(socket) {
       return;
     }
 
-    makeRoom(room);
-
     socket.join(room);
 
-    io.to(socket.id).emit("creationApproved", room);
+    makeRoom(room);
+
+    io.to(socket.id).emit("joinApproved", room);
+
+    io.to(socket.id).emit("roomLogs", { room: room, logs: getRoomLogs(room) });
+
+    io.to(room).emit("chat", {
+      msg: socket.id + " has connected!",
+      room: room,
+    });
+    logMsg(room, socket.id + " has connected!");
 
     io.emit("updateJoinableRooms", getArrayOfRooms(io.sockets.adapter.rooms));
   });
@@ -85,13 +94,11 @@ function handleConnection(socket) {
     });
     logMsg(room, socket.id + " has connected!");
   });
-}
 
-function addUserToRoom(room, user) {
-  let allRooms = getRooms();
-  let targetRoom = allRooms.find((r) => r.room == room);
-  targetRoom.connectedUsers.push(user);
-  fs.writeFileSync("rooms.json", JSON.stringify(allRooms, null, 3));
+  socket.on("disconnect", function() {
+    //ta bort rummet från JSON filen om det är tomt på användare!!!
+    //gör även nåt liknande för om en socket lämnar ett rum (add leave function)
+  })
 }
 
 function getRoomLogs(room) {
@@ -116,7 +123,7 @@ function getRooms() {
 function makeRoom(room) {
   let allRooms = getRooms();
 
-  let newRoom = { room: room, connectedUsers: [], logs: [] };
+  let newRoom = { room: room, logs: [] };
 
   allRooms.push(newRoom);
 
@@ -125,20 +132,12 @@ function makeRoom(room) {
 
 function getArrayOfRooms(rooms) {
   let ArrayOfRooms = [];
-  let allRooms = getRooms();
-  allRooms.forEach((room) => {
-    ArrayOfRooms.push(room.room);
-  });
 
-  let testArray = [];
-  console.log(rooms);
   rooms.forEach(function (value, key) {
     if (!value.has(key)) {
-      testArray.push(key);
+      ArrayOfRooms.push(key);
     }
   });
-  console.log(testArray);
-  console.log(ArrayOfRooms);
 
   return ArrayOfRooms;
 }
