@@ -52,11 +52,34 @@ h1 {
   grid-template-rows: min-content 400px auto;
 }
 
-.chat > h2 {
+.chatHeader {
+  display: grid;
+  grid-template-areas: "a";
+}
+
+.chatHeader * {
+  grid-area: a;
+}
+
+.moveChat {
+  place-self: center start;
+  margin-left: 15px;
+}
+
+.moveChat button {
+  font-size: 1.5rem;
+}
+
+.chatHeader h2 {
   justify-self: center;
 }
 
-.chat > div:first-of-type {
+.leaveBtn {
+  place-self: center end;
+  margin-right: 15px;
+}
+
+.msgBox {
   height: 100%;
   align-content: end;
   border: 2px solid #fca311;
@@ -66,17 +89,17 @@ h1 {
   padding-inline: 8px;
 }
 
-.chat > div:nth-of-type(2) {
+.inputBox {
   display: grid;
   grid-template-columns: auto min-content;
   gap: 5px;
 }
 
-.chat textarea {
+.inputBox textarea {
   resize: none;
   overflow: hidden;
 }
 
-.chat button {
+.sendBtn {
   padding-inline: 30px;
 }

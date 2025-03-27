@@ -43,6 +43,9 @@ function handleConnection(socket) {
   logMsg("global", socket.id + " has connected!");
 
   socket.on("chat", function (obj) {
+    //om användaren inte är med i rummet ska chatten inte gå vidare
+    if (!socket.rooms.has(obj.room)) return;
+    
     let msg = socket.id + ": " + obj.input;
 
     logMsg(obj.room, msg);
@@ -55,7 +58,7 @@ function handleConnection(socket) {
 
   socket.on("createRoomRequest", function (room) {
     if (io.sockets.adapter.rooms.get(room)) {
-      io.to(socket.id).emit("creationDenied", room);
+      io.to(socket.id).emit("creationDenied");
       return;
     }
 
@@ -95,10 +98,13 @@ function handleConnection(socket) {
     logMsg(room, socket.id + " has connected!");
   });
 
+  socket.on("leaveRoom", function(room) {
+    socket.leave(room);
+  });
+
   socket.on("disconnect", function() {
-    //ta bort rummet från JSON filen om det är tomt på användare!!!
     //gör även nåt liknande för om en socket lämnar ett rum (add leave function)
-  })
+  });
 }
 
 function getRoomLogs(room) {

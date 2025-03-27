@@ -5,53 +5,71 @@ clientSocket.on("updateUserID", function (userID) {
 });
 
 clientSocket.on("updateJoinableRooms", function (array) {
-  let optionElements = document.getElementById("joinRoom").querySelectorAll("option");
+  let optionElements = document
+    .getElementById("joinRoom")
+    .querySelectorAll("option");
   let optionValues = [];
 
-  optionElements.forEach(element => {
+  optionElements.forEach((element) => {
     optionValues.push(element.value);
   });
 
-  array.forEach(room => {
+  array.forEach((room) => {
     if (!optionValues.find((opt) => opt == room)) {
       let option = document.createElement("option");
       option.value = room;
       option.innerText = room;
       document.getElementById("rooms").appendChild(option);
-    };
+    }
   });
 });
 
 clientSocket.on("roomLogs", function (obj) {
-  obj.logs.forEach(msg => {
-    printMessage({ msg, room: obj.room })
+  obj.logs.forEach((msg) => {
+    printMessage({ msg, room: obj.room });
   });
 });
 
-document.querySelector(".chat button").addEventListener("click", handleInput);
-document.querySelector(".chat textarea").addEventListener("keyup", (event) => {
-  if (event.key == "Enter" && event.shiftKey == false) handleInput(event);
-});
+document.querySelector(".sendBtn").addEventListener("click", handleInput);
+document
+  .querySelector(".inputBox textarea")
+  .addEventListener("keyup", (event) => {
+    if (event.key == "Enter" && event.shiftKey == false) handleInput(event);
+  });
+document
+  .querySelector(".leaveBtn")
+  .addEventListener("click", (event) => leaveRoom(event));
+document.querySelector(".moveLeft").addEventListener("click", (event) => moveRoom(event));
+document.querySelector(".moveRight").addEventListener("click", (event) => moveRoom(event));
 
 function handleInput(event) {
   let room = event.srcElement.parentElement.parentElement.id;
 
   let input = document
     .getElementById(room)
-    .querySelector(".chat textarea")
+    .querySelector(".inputBox textarea")
     .value.trim();
 
   if (!input) return;
 
-  document.getElementById(room).querySelector(".chat textarea").value = "";
+  document.getElementById(room).querySelector(".inputBox textarea").value = "";
 
   // skickar meddelandet till servern
   clientSocket.emit("chat", { input, room });
 }
 
+function leaveRoom(event) {
+  let room = event.srcElement.parentElement.parentElement.id;
+  document.getElementById(room).remove();
+  clientSocket.emit("leaveRoom", room);
+}
+
+function moveRoom(event) {
+  alert("fortsätt här på moveRoom!!!");
+}
+
 clientSocket.on("chat", function (obj) {
   printMessage(obj);
-
 });
 
 function printMessage(obj) {
@@ -60,9 +78,7 @@ function printMessage(obj) {
   p.innerText = obj.msg;
   div.appendChild(p);
 
-  let msgArea = document
-    .getElementById(obj.room)
-    .querySelector("div");
+  let msgArea = document.getElementById(obj.room).querySelector(".msgBox");
   msgArea.appendChild(div);
 
   msgArea.scrollTop = msgArea.scrollHeight;
@@ -104,9 +120,9 @@ function joinRoom() {
   let room = document.getElementById("rooms").value;
   if (!room) return;
   document.getElementById("rooms").value = "";
-  
+
   clientSocket.emit("joinRoomRequest", room);
-};
+}
 
 clientSocket.on("joinApproved", function (room) {
   addRoomToHTML(room);
@@ -118,18 +134,46 @@ clientSocket.on("joinDenied", function () {
 
 function addRoomToHTML(roomID) {
   /* Detta skapar rummets HTML och placerar det på sidan */
-  let HTML = document.createElement("div");
-  HTML.classList.add("chat");
-  HTML.id = roomID;
+  let chat = document.createElement("div");
+  chat.classList.add("chat");
+  chat.id = roomID;
+
+  let chatHeader = document.createElement("div");
+  chatHeader.classList.add("chatHeader");
+
+  let moveChat = document.createElement("div");
+  moveChat.classList.add("moveChat");
+
+  let moveLeft = document.createElement("button");
+  moveLeft.innerText = "←";
+
+  let moveRight = document.createElement("button");
+  moveRight.innerText = "→";
+
+  moveChat.appendChild(moveLeft);
+  moveChat.appendChild(moveRight);
 
   let h2 = document.createElement("h2");
   h2.innerText = roomID;
 
-  HTML.appendChild(h2);
+  let leaveBtn = document.createElement("button");
+  leaveBtn.classList.add("leaveBtn");
+  leaveBtn.innerText = "leave";
+  leaveBtn.addEventListener("click", (event) => leaveRoom(event));
 
-  HTML.appendChild(document.createElement("div"));
+  chatHeader.appendChild(moveChat);
+  chatHeader.appendChild(h2);
+  chatHeader.appendChild(leaveBtn);
 
-  let inputArea = document.createElement("div");
+  chat.appendChild(chatHeader);
+
+  let msgBox = document.createElement("div");
+  msgBox.classList.add("msgBox");
+
+  chat.appendChild(msgBox);
+
+  let inputBox = document.createElement("div");
+  inputBox.classList.add("inputBox");
 
   let textarea = document.createElement("textarea");
   textarea.placeholder = "Message";
@@ -137,14 +181,15 @@ function addRoomToHTML(roomID) {
     if (event.key == "Enter" && event.shiftKey == false) handleInput(event);
   });
 
-  let button = document.createElement("button");
-  button.innerText = "send";
-  button.addEventListener("click", handleInput);
+  let sendBtn = document.createElement("button");
+  sendBtn.classList.add("sendBtn");
+  sendBtn.innerText = "send";
+  sendBtn.addEventListener("click", handleInput);
 
-  inputArea.appendChild(textarea);
-  inputArea.appendChild(button);
+  inputBox.appendChild(textarea);
+  inputBox.appendChild(sendBtn);
 
-  HTML.appendChild(inputArea);
+  chat.appendChild(inputBox);
 
-  document.querySelector(".allChatContainer").appendChild(HTML);
+  document.querySelector(".allChatContainer").appendChild(chat);
 }
