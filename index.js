@@ -104,6 +104,7 @@ function handleConnection(socket) {
 
   socket.on("disconnect", function() {
     //gör även nåt liknande för om en socket lämnar ett rum (add leave function)
+    //notify when socket leaves a room or all rooms i guess
   });
 }
 

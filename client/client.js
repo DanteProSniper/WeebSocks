@@ -39,8 +39,12 @@ document
 document
   .querySelector(".leaveBtn")
   .addEventListener("click", (event) => leaveRoom(event));
-document.querySelector(".moveLeft").addEventListener("click", (event) => moveRoom(event));
-document.querySelector(".moveRight").addEventListener("click", (event) => moveRoom(event));
+document
+  .querySelector(".moveLeft")
+  .addEventListener("click", (event) => moveRoom(event));
+document
+  .querySelector(".moveRight")
+  .addEventListener("click", (event) => moveRoom(event));
 
 function handleInput(event) {
   let room = event.srcElement.parentElement.parentElement.id;
@@ -65,7 +69,53 @@ function leaveRoom(event) {
 }
 
 function moveRoom(event) {
-  alert("fortsätt här på moveRoom!!!");
+  //tar fram vilket ordningsnummer detta elementet ligger på
+  let thisOrder =
+    event.srcElement.parentElement.parentElement.parentElement.style.order;
+
+  //kollar om det ska vänster och om det är längst till vänster
+  if (event.srcElement.classList.contains("moveLeft") && thisOrder != 1) {
+
+    //hämtar elementet som klickades på
+    let thisElement =
+      event.srcElement.parentElement.parentElement.parentElement;
+
+    //hämtar elementet som ska byta plats
+    let otherElement = "";
+    document.querySelectorAll(".chat").forEach((element) => {
+      if (element.style.order == thisOrder - 1) {
+        otherElement = element;
+      }
+    });
+
+    //byter ut deras ordernummer
+    thisElement.style.order = thisOrder - 1;
+    otherElement.style.order = thisOrder;
+  }
+  //kollar om det ska till höger och om det är längst till höger
+  else if (
+    !event.srcElement.classList.contains("moveLeft") &&
+    document.querySelector(".allChatContainer").childElementCount != thisOrder
+  ) {
+    //hämtar elementet som klickades på
+    let thisElement =
+      event.srcElement.parentElement.parentElement.parentElement;
+
+    //hämtar elementet som ska byta plats
+    let otherElement = "";
+    document.querySelectorAll(".chat").forEach((element) => {
+      if (element.style.order == Number(thisOrder) + 1) {
+        otherElement = element;
+      }
+    });
+
+    //byter ut deras ordernummer
+    thisElement.style.order = Number(thisOrder) + 1;
+    otherElement.style.order = thisOrder;
+  }
+
+  //document.querySelector(".allChatContainer").childElementCount
+  //document.querySelector('[order="1"]')
 }
 
 clientSocket.on("chat", function (obj) {
@@ -146,9 +196,13 @@ function addRoomToHTML(roomID) {
 
   let moveLeft = document.createElement("button");
   moveLeft.innerText = "←";
+  moveLeft.classList.add("moveLeft");
+  moveLeft.addEventListener("click", (event) => moveRoom(event));
 
   let moveRight = document.createElement("button");
   moveRight.innerText = "→";
+  moveRight.classList.add("moveRight");
+  moveRight.addEventListener("click", (event) => moveRoom(event));
 
   moveChat.appendChild(moveLeft);
   moveChat.appendChild(moveRight);
@@ -190,6 +244,9 @@ function addRoomToHTML(roomID) {
   inputBox.appendChild(sendBtn);
 
   chat.appendChild(inputBox);
+
+  let order = document.querySelector(".allChatContainer").childElementCount + 1;
+  chat.style = "order: " + order + ";";
 
   document.querySelector(".allChatContainer").appendChild(chat);
 }

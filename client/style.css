@@ -57,13 +57,16 @@ h1 {
   grid-template-areas: "a";
 }
 
-.chatHeader * {
+.chatHeader > * {
   grid-area: a;
 }
 
 .moveChat {
   place-self: center start;
   margin-left: 15px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5px;
 }
 
 .moveChat button {
