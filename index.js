@@ -17,6 +17,8 @@ server.listen(3400, (_) => {
 // this stuff är annat type shi
 const fs = require("fs");
 
+fs.writeFileSync("rooms.json", '[{"room": "global","logs": []}]')
+
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/chat.html");
 });
@@ -45,7 +47,7 @@ function handleConnection(socket) {
   socket.on("chat", function (obj) {
     //om användaren inte är med i rummet ska chatten inte gå vidare
     if (!socket.rooms.has(obj.room)) return;
-    
+
     let msg = socket.id + ": " + obj.input;
 
     logMsg(obj.room, msg);
@@ -93,17 +95,21 @@ function handleConnection(socket) {
 
     io.to(room).emit("chat", {
       msg: socket.id + " has connected!",
-      room: room,
+      room: room
     });
     logMsg(room, socket.id + " has connected!");
   });
 
-  socket.on("leaveRoom", function(room) {
+  socket.on("leaveRoom", function (room) {
     socket.leave(room);
+    io.to(room).emit("chat", {
+      msg: socket.id + " disconnected.",
+      room: room
+    });
   });
 
-  socket.on("disconnect", function() {
-    //gör även nåt liknande för om en socket lämnar ett rum (add leave function)
+  socket.on("disconnect", function () {
+
     //notify when socket leaves a room or all rooms i guess
   });
 }
