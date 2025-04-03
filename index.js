@@ -1,13 +1,24 @@
 const express = require("express");
+const session = require("express-session");
 const app = express();
 
 app.use(express.static("client"));
+
+const sessionMw = session({
+  secret: "keyboard cat",
+  resave: false,
+  saveUninitialized: true,
+  cookie: {},
+});
+
+app.use(sessionMw);
 
 const { createServer } = require("http");
 const { Server } = require("socket.io");
 
 const server = createServer(app);
 const io = new Server(server);
+io.engine.use(sessionMw);
 
 server.listen(3400, (_) => {
   console.log("http://localhost:3400");
@@ -17,15 +28,21 @@ server.listen(3400, (_) => {
 // this stuff är annat type shi
 const fs = require("fs");
 
-fs.writeFileSync("rooms.json", '[{"room": "global","logs": []}]')
+fs.writeFileSync("rooms.json", '[{"room": "global","logs": []}]');
 
 app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/chat.html");
+  //req.session.userId = "gabagoo";
+  res.sendFile(__dirname + "/template.html");
 });
 
 io.on("connection", handleConnection);
 
 function handleConnection(socket) {
+
+  
+  //socket.join(socket.request.session.userId);
+  //console.log(io.sockets.adapter.rooms);
+
   //gör att socketen kan uppdatera det visade användar id:t
   io.to(socket.id).emit("updateUserID", socket.id);
   socket.join("global");
@@ -95,7 +112,7 @@ function handleConnection(socket) {
 
     io.to(room).emit("chat", {
       msg: socket.id + " has connected!",
-      room: room
+      room: room,
     });
     logMsg(room, socket.id + " has connected!");
   });
@@ -104,12 +121,11 @@ function handleConnection(socket) {
     socket.leave(room);
     io.to(room).emit("chat", {
       msg: socket.id + " disconnected.",
-      room: room
+      room: room,
     });
   });
 
   socket.on("disconnect", function () {
-
     //notify when socket leaves a room or all rooms i guess
   });
 }
