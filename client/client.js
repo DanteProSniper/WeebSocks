@@ -1,6 +1,6 @@
 const clientSocket = io();
 
-clientSocket.on("updateUserID", function (userID) {
+clientSocket.on("updateUsername", function (userID) {
   document.querySelector(".displayUserID").innerText = userID;
 });
 
@@ -29,6 +29,11 @@ clientSocket.on("roomLogs", function (obj) {
     printMessage({ msg, room: obj.room });
   });
 });
+
+document.querySelector(".logout").addEventListener("click", logout);
+function logout(){
+  
+}
 
 document.querySelector(".sendBtn").addEventListener("click", handleInput);
 document

@@ -30,12 +30,16 @@ h1 {
 
 .manage > div:last-of-type {
   display: grid;
-  grid-template-columns: max-content max-content;
+  grid-template-columns: repeat(3, max-content);
   gap: 1rem;
 }
 
 .manage p {
   margin: 0;
+}
+
+.logout {
+  margin-left: 15px;
 }
 
 .allChatContainer {
@@ -105,4 +109,12 @@ h1 {
 
 .sendBtn {
   padding-inline: 30px;
+}
+
+.login {
+  place-items: center;
+}
+
+form {
+  padding-bottom: 30px;
 }
