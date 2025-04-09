@@ -1,8 +1,16 @@
-[
-   {
-      "room": "global",
+{
+   "global": {
+      "users": [
+         "user1",
+         "user2",
+         "user3"
+      ],
       "logs": [
-         "g has connected!"
+         {
+            "msg": "bla bla bla bla bla bla",
+            "name": "randomUser",
+            "userID": "69420"
+         }
       ]
    }
-]
+}

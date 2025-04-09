@@ -32,25 +32,24 @@ const fs = require("fs");
 
 app.get("/", (req, res) => {
   if (!req.session.UserID) {
-    res.redirect("/login");
+    return res.send(render(fs.readFileSync("login.html").toString()));
   }
-  console.log()
-  res.sendFile(__dirname + "/template.html");
+  res.send(render(fs.readFileSync("structure.html").toString(), req.session.name));
 });
 
 app.get("/register", (req, res) => {
-  res.sendFile(__dirname + "/register.html");
+  res.send(render(fs.readFileSync("register.html").toString()));
 });
 
 app.post("/register", register);
 
 async function register(req, res) {
-  let obj = {name: req.body.name, password: req.body.pw};
-  
+  let obj = { name: req.body.name, password: req.body.pw };
+
   let users = JSON.parse(fs.readFileSync("users.json").toString());
   let user = users.find((u) => u.name == obj.name);
 
-  if (user) return res.redirect("/register");
+  if (user) return res.send(render("ERROR"));
 
 
   obj.id = "" + Date.now();
@@ -67,7 +66,7 @@ async function register(req, res) {
 
 
 app.get("/login", (req, res) => {
-  res.sendFile(__dirname + "/login.html");
+  res.send(render(fs.readFileSync("login.html").toString()));
 });
 
 app.post("/login", login);
@@ -84,7 +83,7 @@ async function login(req, res) {
   let user = users.find((u) => u.name == obj.name);
 
   if (!user) {
-    res.redirect("/login");
+    return res.send(render("ERROR"));
   }
 
   let checkPW = await bcrypt.compare(obj.password, user.password);
@@ -92,7 +91,6 @@ async function login(req, res) {
 
   req.session.UserID = user.id;
   req.session.name = user.name;
-  console.log("logged in");
   res.redirect("/");
 }
 
@@ -102,9 +100,9 @@ function handleConnection(socket) {
   //socket.join(socket.request.session.userId);
   //console.log(io.sockets.adapter.rooms);
 
+
   //gör att socketen kan uppdatera det visade användar id:t
   io.to(socket.id).emit("updateUsername", socket.request.session.name);
-  socket.join("global");
   //uppdaterar användarens select element med options
   io.to(socket.id).emit(
     "updateJoinableRooms",
@@ -228,4 +226,11 @@ function getArrayOfRooms(rooms) {
   });
 
   return ArrayOfRooms;
+}
+
+function render(content, username) {
+  let html = fs.readFileSync("template.html").toString();
+  html = html.replace("--content--", content);
+  if (username) {html = html.replace("--username--", username)};
+  return html;
 }

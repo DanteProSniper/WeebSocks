@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="client.js" defer></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>My Chat</h1>
+    </header>
+    <div class="manage">
+        <div id="createRoom">
+            <input type="text" name="createdRoom" placeholder="Room name">
+            <button type="button">Create Room</button>
+        </div>
+        
+        <div id="joinRoom">
+            <select name="rooms" id="rooms">
+                <option value="">Join room</option>
+            </select>
+        </div>
+        <div>
+            <p>Connected as:</p><p class="displayUserID"></p>
+            <a href="/logout" class="logout">log out</a>
+        </div>
+    </div>
+    <div class="allChatContainer">
+        <div class="chat" id="global" style="order: 1;">
+            <div class="chatHeader">
+                <div class="moveChat">
+                    <button class="moveLeft">←</button>
+                    <button class="moveRight">→</button>
+                </div>
+                <h2>global</h2>
+                <button class="leaveBtn">leave</button>
+            </div>
+            <div class="msgBox">
+
+            </div>
+            <div class="inputBox">
+                <textarea placeholder="Message"></textarea>
+                <button class="sendBtn">send</button>
+            </div>  
+        </div>
+    </div>
+
+
+</body>
+</html>
