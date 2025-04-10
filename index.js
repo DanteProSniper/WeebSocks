@@ -29,6 +29,7 @@ server.listen(3400, (_) => {
 
 // this stuff är annat type shi
 const fs = require("fs");
+const { connected } = require("process");
 
 app.get("/", (req, res) => {
   if (!req.session.userID) {
@@ -55,6 +56,7 @@ async function register(req, res) {
 
   obj.id = "" + Date.now();
   obj.password = await bcrypt.hash(obj.password, 12);
+  obj.rooms = [];
   users.push(obj);
 
   fs.writeFileSync("users.json", JSON.stringify(users, null, 3));
@@ -103,11 +105,43 @@ function handleConnection(socket) {
   //uppdaterar användarens select element med options
   io.to(socket.id).emit("updateJoinableRooms", getArrayOfRooms());
 
+  //skickar rummen som användaren är med i
+  let users = JSON.parse(fs.readFileSync("users.json").toString());
+  let user = users.find((u) => (u.id == socket.request.session.userID));
+  user.rooms.forEach((room) => {
+
+    socket.join(room);
+
+    io.to(socket.id).emit("joinApproved", sendChatFrame(room));
+
+    let allRooms = getRooms();
+    allRooms[room].users.push(socket.request.session.name);
+    fs.writeFileSync("rooms.json", JSON.stringify(allRooms, null, 3));
+
+    io.to(socket.id).emit("roomLogs", { room: room, logs: getRoomLogs(room) });
+
+    io.to(room).emit("chat", {
+      msg: socket.request.session.name + " has connected!",
+      room: room,
+    });
+    logMsg(
+      socket.request.session.name,
+      socket.request.session.userID,
+      room,
+      socket.request.session.name + " has connected!"
+    );
+  });
+
   socket.on("chat", function (obj) {
     //om användaren inte är med i rummet ska chatten inte gå vidare
     if (!socket.rooms.has(obj.room)) return;
 
     let msg = socket.request.session.name + ": " + obj.input;
+
+    io.to(obj.room).emit("chat", {
+      msg,
+      room: obj.room,
+    });
 
     logMsg(
       socket.request.session.name,
@@ -115,11 +149,6 @@ function handleConnection(socket) {
       obj.room,
       msg
     );
-
-    io.to(obj.room).emit("chat", {
-      msg,
-      room: obj.room,
-    });
   });
 
   socket.on("createRoomRequest", function (room) {
@@ -129,6 +158,8 @@ function handleConnection(socket) {
     }
 
     makeRoom(room);
+
+    io.emit("updateJoinableRooms", getArrayOfRooms());
 
     joinProcess(socket, room);
   });
@@ -143,6 +174,7 @@ function handleConnection(socket) {
   });
 
   socket.on("leaveRoom", function (room) {
+    if (!socket.request.session.userID) return;
     socket.leave(room);
     io.to(room).emit("chat", {
       msg: socket.request.session.name + " disconnected.",
@@ -158,21 +190,44 @@ function handleConnection(socket) {
 
     let allRooms = getRooms();
     let connectedUsers = allRooms[room].users;
-    connectedUsers = connectedUsers.filter((u) => u == socket.request.session.name);
+    allRooms[room].users = connectedUsers.filter((u) => u != socket.request.session.name);
     fs.writeFileSync("rooms.json", JSON.stringify(allRooms, null, 3));
 
-    let users = JSON.stringify(fs.readFileSync("users.json").toString());
-    let user = users.find((u) => u.name == socket.request.session.name);
-    user.rooms.filter((r) => r == room);
-    fs.writeFileSync("users.json", users);
+    let users = JSON.parse(fs.readFileSync("users.json").toString());
+    let user = users.find((u) => u.id == socket.request.session.userID);
+    user.rooms = user.rooms.filter((r) => r != room);
+    fs.writeFileSync("users.json", JSON.stringify(users, null, 3));
   });
 
   socket.on("disconnect", function () {
-    //notify when socket leaves a room or all rooms i guess
+    //säger till alla rum som användaren var med i att den har kopplat från
+    let users = JSON.parse(fs.readFileSync("users.json").toString());
+    let user = users.find((u) => u.id == socket.request.session.userID);
+    user.rooms.forEach((room) => {
+      io.to(room).emit("chat", {
+        msg: socket.request.session.name + " disconnected.",
+        room: room,
+      });
+  
+      logMsg(
+        socket.request.session.name,
+        socket.request.session.userID,
+        room,
+        socket.request.session.name + " disconnected."
+      );
+    });
+
+    //tar bort denna användare från alla rum den kan ha varit med i
+    let allRooms = JSON.parse(fs.readFileSync("rooms.json").toString());
+    Object.keys(allRooms).forEach((room) => {
+      allRooms[room].users = allRooms[room].users.filter((name) => name != socket.request.session.name);
+      fs.writeFileSync("rooms.json", JSON.stringify(allRooms, null, 3));
+    })
   });
 }
 
 function joinProcess(socket, room) {
+  if (!socket.request.session.userID) return;
   socket.join(room);
 
   io.to(socket.id).emit("joinApproved", sendChatFrame(room));
@@ -182,7 +237,7 @@ function joinProcess(socket, room) {
   fs.writeFileSync("rooms.json", JSON.stringify(allRooms, null, 3));
 
   let users = JSON.parse(fs.readFileSync("users.json").toString());
-  let user = users.find((u) => (u.id = socket.request.session.userID));
+  let user = users.find((u) => (u.id == socket.request.session.userID));
   user.rooms.push(room);
   fs.writeFileSync("users.json", JSON.stringify(users, null, 3));
 
@@ -216,7 +271,7 @@ function logMsg(name, id, room, msg) {
   let allRooms = getRooms();
   allRooms[room].logs.push(obj);
 
-  //fs.writeFileSync("rooms.json", JSON.stringify(allRooms, null, 3));
+  fs.writeFileSync("rooms.json", JSON.stringify(allRooms, null, 3));
 }
 
 function getRoomLogs(room) {

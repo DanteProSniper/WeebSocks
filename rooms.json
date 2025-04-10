@@ -1,80 +1,137 @@
 {
-   "546": {
-      "users": [
-         "g"
-      ],
-      "logs": []
-   },
-   "1234": {
-      "users": [
-         "g",
-         null,
-         "g",
-         "g"
-      ],
-      "logs": []
-   },
-   "5432": {
-      "users": [
-         "g",
-         "g",
-         "dante"
-      ],
-      "logs": []
-   },
    "global": {
-      "users": [
-         "user1",
-         "user2",
-         "user3",
-         "g",
-         "g",
-         "g"
-      ],
+      "users": [],
       "logs": [
          {
-            "msg": "bla bla bla bla bla bla",
-            "name": "randomUser",
-            "userID": "69420"
+            "msg": "dante disconnected.",
+            "name": "dante",
+            "userID": "1744307236877"
          },
          {
-            "msg": "lakaka is a gooner",
+            "msg": "g disconnected.",
+            "name": "g",
+            "userID": "1744306701613"
+         },
+         {
+            "msg": "tjolle has connected!",
             "name": "tjolle",
-            "userID": "123456789"
+            "userID": "1744307735940"
+         },
+         {
+            "msg": "tjolle disconnected.",
+            "name": "tjolle",
+            "userID": "1744307735940"
+         },
+         {
+            "msg": "tjolle has connected!",
+            "name": "tjolle",
+            "userID": "1744307735940"
+         },
+         {
+            "msg": "tjolle disconnected.",
+            "name": "tjolle",
+            "userID": "1744307735940"
+         },
+         {
+            "msg": "dante has connected!",
+            "name": "dante",
+            "userID": "1744307236877"
+         },
+         {
+            "msg": "dante disconnected.",
+            "name": "dante",
+            "userID": "1744307236877"
+         },
+         {
+            "msg": "g has connected!",
+            "name": "g",
+            "userID": "1744306701613"
+         },
+         {
+            "msg": "g disconnected.",
+            "name": "g",
+            "userID": "1744306701613"
          }
       ]
    },
-   "lakaka": {
-      "users": [
-         "g",
-         "g"
-      ],
-      "logs": []
+   "poopoo": {
+      "users": [],
+      "logs": [
+         {
+            "msg": "dante disconnected.",
+            "name": "dante",
+            "userID": "1744307236877"
+         },
+         {
+            "msg": "g disconnected.",
+            "name": "g",
+            "userID": "1744306701613"
+         },
+         {
+            "msg": "tjolle has connected!",
+            "name": "tjolle",
+            "userID": "1744307735940"
+         },
+         {
+            "msg": "tjolle disconnected.",
+            "name": "tjolle",
+            "userID": "1744307735940"
+         },
+         {
+            "msg": "dante has connected!",
+            "name": "dante",
+            "userID": "1744307236877"
+         },
+         {
+            "msg": "dante disconnected.",
+            "name": "dante",
+            "userID": "1744307236877"
+         },
+         {
+            "msg": "g has connected!",
+            "name": "g",
+            "userID": "1744306701613"
+         },
+         {
+            "msg": "g disconnected.",
+            "name": "g",
+            "userID": "1744306701613"
+         }
+      ]
    },
-   "gfdgf": {
-      "users": [
-         "g",
-         "g"
-      ],
-      "logs": []
-   },
-   "kaka": {
-      "users": [
-         "g"
-      ],
-      "logs": []
-   },
-   "he": {
-      "users": [
-         "g",
-         "g"
-      ],
-      "logs": []
-   },
-   "in the nighyt": {
-      "users": [
-         "g"
-      ],
-      "logs": []
+   "bombaclat": {
+      "users": [],
+      "logs": [
+         {
+            "msg": "dante disconnected.",
+            "name": "dante",
+            "userID": "1744307236877"
+         },
+         {
+            "msg": "g disconnected.",
+            "name": "g",
+            "userID": "1744306701613"
+         },
+         {
+            "msg": "dante has connected!",
+            "name": "dante",
+            "userID": "1744307236877"
+         },
+         {
+            "msg": "dante disconnected.",
+            "name": "dante",
+            "userID": "1744307236877"
+         },
+         {
+            "msg": "g has connected!",
+            "name": "g",
+            "userID": "1744306701613"
+         },
+         {
+            "msg": "g disconnected.",
+            "name": "g",
+            "userID": "1744306701613"
+         }
+      ]
    }
 }
