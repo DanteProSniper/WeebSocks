@@ -20,28 +20,6 @@ clientSocket.on("updateJoinableRooms", function (array) {
   });
 });
 
-function handleInput(event) {
-  let room = event.srcElement.parentElement.parentElement.id;
-
-  let input = document
-    .getElementById(room)
-    .querySelector(".inputBox textarea")
-    .value.trim();
-
-  if (!input) return;
-
-  document.getElementById(room).querySelector(".inputBox textarea").value = "";
-
-  // skickar meddelandet till servern
-  clientSocket.emit("chat", { input, room });
-}
-
-function leaveRoom(event) {
-  let room = event.srcElement.parentElement.parentElement.id;
-  document.getElementById(room).remove();
-  clientSocket.emit("leaveRoom", room);
-}
-
 function moveRoom(event) {
   //tar fram vilket ordningsnummer detta elementet ligger på
   let thisOrder =
@@ -151,10 +129,12 @@ clientSocket.on("joinApproved", function (stringHTML) {
   let temp = document.createElement("div");
   temp.innerHTML = stringHTML;
   let chatFrame = temp.firstChild;
+  let order = document.querySelector(".allChatContainer").childElementCount + 1;
+  chatFrame.style = "order: " + order + ";";
   document.querySelector(".allChatContainer").appendChild(chatFrame);
+  
 
   let room = chatFrame.id;
-
   document
     .getElementById(room)
     .querySelector(".sendBtn")
@@ -177,7 +157,30 @@ clientSocket.on("joinApproved", function (stringHTML) {
     .getElementById(room)
     .querySelector(".moveRight")
     .addEventListener("click", (event) => moveRoom(event));
+
 });
+
+function handleInput(event) {
+  let room = event.srcElement.parentElement.parentElement.id;
+
+  let input = document
+    .getElementById(room)
+    .querySelector(".inputBox textarea")
+    .value.trim();
+
+  if (!input) return;
+
+  document.getElementById(room).querySelector(".inputBox textarea").value = "";
+
+  // skickar meddelandet till servern
+  clientSocket.emit("chat", { input, room });
+}
+
+function leaveRoom(event) {
+  let room = event.srcElement.parentElement.parentElement.id;
+  document.getElementById(room).remove();
+  clientSocket.emit("leaveRoom", room);
+}
 
 clientSocket.on("joinDenied", function () {
   alert("You were not allowed to join room!");
@@ -189,71 +192,4 @@ clientSocket.on("roomLogs", function (obj) {
   });
 });
 
-function addRoomToHTML(roomID) {
-  /* Detta skapar rummets HTML och placerar det på sidan */
-  let chat = document.createElement("div");
-  chat.classList.add("chat");
-  chat.id = roomID;
 
-  let chatHeader = document.createElement("div");
-  chatHeader.classList.add("chatHeader");
-
-  let moveChat = document.createElement("div");
-  moveChat.classList.add("moveChat");
-
-  let moveLeft = document.createElement("button");
-  moveLeft.innerText = "←";
-  moveLeft.classList.add("moveLeft");
-  moveLeft.addEventListener("click", (event) => moveRoom(event));
-
-  let moveRight = document.createElement("button");
-  moveRight.innerText = "→";
-  moveRight.classList.add("moveRight");
-  moveRight.addEventListener("click", (event) => moveRoom(event));
-
-  moveChat.appendChild(moveLeft);
-  moveChat.appendChild(moveRight);
-
-  let h2 = document.createElement("h2");
-  h2.innerText = roomID;
-
-  let leaveBtn = document.createElement("button");
-  leaveBtn.classList.add("leaveBtn");
-  leaveBtn.innerText = "leave";
-  leaveBtn.addEventListener("click", (event) => leaveRoom(event));
-
-  chatHeader.appendChild(moveChat);
-  chatHeader.appendChild(h2);
-  chatHeader.appendChild(leaveBtn);
-
-  chat.appendChild(chatHeader);
-
-  let msgBox = document.createElement("div");
-  msgBox.classList.add("msgBox");
-
-  chat.appendChild(msgBox);
-
-  let inputBox = document.createElement("div");
-  inputBox.classList.add("inputBox");
-
-  let textarea = document.createElement("textarea");
-  textarea.placeholder = "Message";
-  textarea.addEventListener("keyup", (event) => {
-    if (event.key == "Enter" && event.shiftKey == false) handleInput(event);
-  });
-
-  let sendBtn = document.createElement("button");
-  sendBtn.classList.add("sendBtn");
-  sendBtn.innerText = "send";
-  sendBtn.addEventListener("click", handleInput);
-
-  inputBox.appendChild(textarea);
-  inputBox.appendChild(sendBtn);
-
-  chat.appendChild(inputBox);
-
-  let order = document.querySelector(".allChatContainer").childElementCount + 1;
-  chat.style = "order: " + order + ";";
-
-  document.querySelector(".allChatContainer").appendChild(chat);
-}

@@ -7,13 +7,18 @@
    },
    "1234": {
       "users": [
+         "g",
+         null,
+         "g",
          "g"
       ],
       "logs": []
    },
    "5432": {
       "users": [
-         "g"
+         "g",
+         "g",
+         "dante"
       ],
       "logs": []
    },
@@ -21,7 +26,10 @@
       "users": [
          "user1",
          "user2",
-         "user3"
+         "user3",
+         "g",
+         "g",
+         "g"
       ],
       "logs": [
          {
@@ -37,11 +45,15 @@
       ]
    },
    "lakaka": {
-      "users": [],
+      "users": [
+         "g",
+         "g"
+      ],
       "logs": []
    },
    "gfdgf": {
       "users": [
+         "g",
          "g"
       ],
       "logs": []
@@ -54,6 +66,7 @@
    },
    "he": {
       "users": [
+         "g",
          "g"
       ],
       "logs": []
