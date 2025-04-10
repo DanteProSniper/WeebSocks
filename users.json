@@ -3,30 +3,57 @@
       "name": "g",
       "password": "$2b$12$mq./6L0YppJlyAWNH76iI.vXQn.uBrY67oTRl1gbk4K8uK0no5fjW",
       "id": "1743766737486",
-      "rooms": ["room1", "room2", "room3"]
+      "rooms": [
+         "room1",
+         "room2",
+         "room3",
+         "1234",
+         "gfdgf",
+         "kaka",
+         "he",
+         "5432",
+         "546",
+         "in the nighyt"
+      ]
    },
    {
       "name": "tjolle",
       "password": "$2b$12$jMY5g3B8v/ODWRedTQJxF.usC1WtaJ1q/RRAynpo/pumITSttG5uW",
       "id": "1743767862627",
-      "rooms": ["room1", "room2", "room3"]
+      "rooms": [
+         "room1",
+         "room2",
+         "room3"
+      ]
    },
    {
       "name": "lakaka",
       "password": "$2b$12$eFpY8X/mh4FN1/yxTVe1EeVke5QSUOdLWbK3rEBf29IXwY02D/ou2",
       "id": "1743768022910",
-      "rooms": ["room1", "room2", "room3"]
+      "rooms": [
+         "room1",
+         "room2",
+         "room3"
+      ]
    },
    {
       "name": "asd",
       "password": "$2b$12$UM.ax.tI5g7meM6E8RToCO2Zs4tVdbhnWNVg7aN7LBsmFth.NBls2",
       "id": "1744214390850",
-      "rooms": ["room1", "room2", "room3"]
+      "rooms": [
+         "room1",
+         "room2",
+         "room3"
+      ]
    },
    {
       "name": "dante",
       "password": "$2b$12$a6.hbZZ1Up1u8fdCXkEwbexVJ8pz4FMNSJsGeDpps9F1UrSYMV.uq",
       "id": "1744219851344",
-      "rooms": ["room1", "room2", "room3"]
+      "rooms": [
+         "room1",
+         "room2",
+         "room3"
+      ]
    }
 ]

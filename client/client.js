@@ -20,33 +20,6 @@ clientSocket.on("updateJoinableRooms", function (array) {
   });
 });
 
-clientSocket.on("roomLogs", function (obj) {
-  obj.logs.forEach((msg) => {
-    printMessage({ msg, room: obj.room });
-  });
-});
-
-document.querySelector(".logout").addEventListener("click", logout);
-function logout(){
-  
-}
-
-document.querySelector(".sendBtn").addEventListener("click", handleInput);
-document
-  .querySelector(".inputBox textarea")
-  .addEventListener("keyup", (event) => {
-    if (event.key == "Enter" && event.shiftKey == false) handleInput(event);
-  });
-document
-  .querySelector(".leaveBtn")
-  .addEventListener("click", (event) => leaveRoom(event));
-document
-  .querySelector(".moveLeft")
-  .addEventListener("click", (event) => moveRoom(event));
-document
-  .querySelector(".moveRight")
-  .addEventListener("click", (event) => moveRoom(event));
-
 function handleInput(event) {
   let room = event.srcElement.parentElement.parentElement.id;
 
@@ -76,7 +49,6 @@ function moveRoom(event) {
 
   //kollar om det ska vänster och om det är längst till vänster
   if (event.srcElement.classList.contains("moveLeft") && thisOrder != 1) {
-
     //hämtar elementet som klickades på
     let thisElement =
       event.srcElement.parentElement.parentElement.parentElement;
@@ -175,12 +147,46 @@ function joinRoom() {
   clientSocket.emit("joinRoomRequest", room);
 }
 
-clientSocket.on("joinApproved", function (room) {
-  addRoomToHTML(room);
+clientSocket.on("joinApproved", function (stringHTML) {
+  let temp = document.createElement("div");
+  temp.innerHTML = stringHTML;
+  let chatFrame = temp.firstChild;
+  document.querySelector(".allChatContainer").appendChild(chatFrame);
+
+  let room = chatFrame.id;
+
+  document
+    .getElementById(room)
+    .querySelector(".sendBtn")
+    .addEventListener("click", handleInput);
+  document
+    .getElementById(room)
+    .querySelector(".inputBox textarea")
+    .addEventListener("keyup", (event) => {
+      if (event.key == "Enter" && event.shiftKey == false) handleInput(event);
+    });
+  document
+    .getElementById(room)
+    .querySelector(".leaveBtn")
+    .addEventListener("click", (event) => leaveRoom(event));
+  document
+    .getElementById(room)
+    .querySelector(".moveLeft")
+    .addEventListener("click", (event) => moveRoom(event));
+  document
+    .getElementById(room)
+    .querySelector(".moveRight")
+    .addEventListener("click", (event) => moveRoom(event));
 });
 
 clientSocket.on("joinDenied", function () {
   alert("You were not allowed to join room!");
+});
+
+clientSocket.on("roomLogs", function (obj) {
+  obj.logs.forEach((msg) => {
+    printMessage({ msg, room: obj.room });
+  });
 });
 
 function addRoomToHTML(roomID) {

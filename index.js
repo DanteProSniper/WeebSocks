@@ -32,7 +32,7 @@ const fs = require("fs");
 
 app.get("/", (req, res) => {
   if (!req.session.userID) {
-    return res.send(render(fs.readFileSync("login.html").toString()));
+    return res.redirect("/login");
   }
   res.send(
     render(fs.readFileSync("structure.html").toString(), req.session.name)
@@ -148,12 +148,23 @@ function handleConnection(socket) {
       msg: socket.request.session.name + " disconnected.",
       room: room,
     });
+
     logMsg(
       socket.request.session.name,
       socket.request.session.userID,
       room,
       socket.request.session.name + " disconnected."
     );
+
+    let allRooms = getRooms();
+    let connectedUsers = allRooms[room].users;
+    connectedUsers = connectedUsers.filter((u) => u == socket.request.session.name);
+    fs.writeFileSync("rooms.json", JSON.stringify(allRooms, null, 3));
+
+    let users = JSON.stringify(fs.readFileSync("users.json").toString());
+    let user = users.find((u) => u.name == socket.request.session.name);
+    user.rooms.filter((r) => r == room);
+    fs.writeFileSync("users.json", users);
   });
 
   socket.on("disconnect", function () {
@@ -242,7 +253,9 @@ function render(content, username) {
   html = html.replace("--content--", content);
   if (username) {
     html = html.replace("--username--", username);
+    html = html.replace("--scripts--", '<script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script><script src="client.js" defer></script>')
   }
+  html = html.replace("--scripts--", "");
   return html;
 }
 
