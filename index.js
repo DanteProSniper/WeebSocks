@@ -31,10 +31,12 @@ server.listen(3400, (_) => {
 const fs = require("fs");
 
 app.get("/", (req, res) => {
-  if (!req.session.UserID) {
+  if (!req.session.userID) {
     return res.send(render(fs.readFileSync("login.html").toString()));
   }
-  res.send(render(fs.readFileSync("structure.html").toString(), req.session.name));
+  res.send(
+    render(fs.readFileSync("structure.html").toString(), req.session.name)
+  );
 });
 
 app.get("/register", (req, res) => {
@@ -51,19 +53,17 @@ async function register(req, res) {
 
   if (user) return res.send(render("ERROR"));
 
-
   obj.id = "" + Date.now();
   obj.password = await bcrypt.hash(obj.password, 12);
   users.push(obj);
 
   fs.writeFileSync("users.json", JSON.stringify(users, null, 3));
 
-  req.session.UserID = obj.id;
+  req.session.userID = obj.id;
   req.session.name = obj.name;
 
   res.redirect("/");
 }
-
 
 app.get("/login", (req, res) => {
   res.send(render(fs.readFileSync("login.html").toString()));
@@ -74,7 +74,7 @@ app.post("/login", login);
 app.get("/logout", (req, res) => {
   req.session.destroy();
   res.redirect("/login");
-})
+});
 
 async function login(req, res) {
   let obj = { name: req.body.name, password: req.body.pw };
@@ -89,7 +89,7 @@ async function login(req, res) {
   let checkPW = await bcrypt.compare(obj.password, user.password);
   if (!checkPW) return res.redirect("/login");
 
-  req.session.UserID = user.id;
+  req.session.userID = user.id;
   req.session.name = user.name;
   res.redirect("/");
 }
@@ -97,26 +97,11 @@ async function login(req, res) {
 io.on("connection", handleConnection);
 
 function handleConnection(socket) {
-  //socket.join(socket.request.session.userId);
+  socket.join(socket.request.session.userId);
   //console.log(io.sockets.adapter.rooms);
 
-
-  //gör att socketen kan uppdatera det visade användar id:t
-  io.to(socket.id).emit("updateUsername", socket.request.session.name);
   //uppdaterar användarens select element med options
-  io.to(socket.id).emit(
-    "updateJoinableRooms",
-    getArrayOfRooms(io.sockets.adapter.rooms)
-  );
-
-  //skickar chattmeddelanden till användare
-  io.to(socket.id).emit("roomLogs", {
-    room: "global",
-    logs: getRoomLogs("global"),
-  });
-  //skickar till alla i rummet global att en ny user går med i global
-  io.emit("chat", { msg: socket.request.session.name + " has connected!", room: "global" });
-  logMsg("global", socket.request.session.name + " has connected!");
+  io.to(socket.id).emit("updateJoinableRooms", getArrayOfRooms());
 
   socket.on("chat", function (obj) {
     //om användaren inte är med i rummet ska chatten inte gå vidare
@@ -124,7 +109,12 @@ function handleConnection(socket) {
 
     let msg = socket.request.session.name + ": " + obj.input;
 
-    logMsg(obj.room, msg);
+    logMsg(
+      socket.request.session.name,
+      socket.request.session.userID,
+      obj.room,
+      msg
+    );
 
     io.to(obj.room).emit("chat", {
       msg,
@@ -133,26 +123,14 @@ function handleConnection(socket) {
   });
 
   socket.on("createRoomRequest", function (room) {
-    if (io.sockets.adapter.rooms.get(room)) {
+    if (doesRoomExist(room)) {
       io.to(socket.id).emit("creationDenied");
       return;
     }
 
-    socket.join(room);
-
     makeRoom(room);
 
-    io.to(socket.id).emit("joinApproved", room);
-
-    io.to(socket.id).emit("roomLogs", { room: room, logs: getRoomLogs(room) });
-
-    io.to(room).emit("chat", {
-      msg: socket.request.session.name + " has connected!",
-      room: room,
-    });
-    logMsg(room, socket.request.session.name + " has connected!");
-
-    io.emit("updateJoinableRooms", getArrayOfRooms(io.sockets.adapter.rooms));
+    joinProcess(socket, room);
   });
 
   socket.on("joinRoomRequest", function (room) {
@@ -161,25 +139,21 @@ function handleConnection(socket) {
       return;
     }
 
-    socket.join(room);
-
-    io.to(socket.id).emit("joinApproved", room);
-
-    io.to(socket.id).emit("roomLogs", { room: room, logs: getRoomLogs(room) });
-
-    io.to(room).emit("chat", {
-      msg: socket.id + " has connected!",
-      room: room,
-    });
-    logMsg(room, socket.id + " has connected!");
+    joinProcess(socket, room);
   });
 
   socket.on("leaveRoom", function (room) {
     socket.leave(room);
     io.to(room).emit("chat", {
-      msg: socket.id + " disconnected.",
+      msg: socket.request.session.name + " disconnected.",
       room: room,
     });
+    logMsg(
+      socket.request.session.name,
+      socket.request.session.userID,
+      room,
+      socket.request.session.name + " disconnected."
+    );
   });
 
   socket.on("disconnect", function () {
@@ -187,19 +161,58 @@ function handleConnection(socket) {
   });
 }
 
-function getRoomLogs(room) {
+function joinProcess(socket, room) {
+  socket.join(room);
+
+  io.to(socket.id).emit("joinApproved", sendChatFrame(room));
+
   let allRooms = getRooms();
-  let targetRoom = allRooms.find((r) => r.room == room);
-  return targetRoom.logs;
+  allRooms[room].users.push(socket.request.session.name);
+  fs.writeFileSync("rooms.json", JSON.stringify(allRooms, null, 3));
+
+  let users = JSON.parse(fs.readFileSync("users.json").toString());
+  let user = users.find((u) => (u.id = socket.request.session.userID));
+  user.rooms.push(room);
+  fs.writeFileSync("users.json", JSON.stringify(users, null, 3));
+
+  io.to(socket.id).emit("roomLogs", { room: room, logs: getRoomLogs(room) });
+
+  io.to(room).emit("chat", {
+    msg: socket.request.session.name + " has connected!",
+    room: room,
+  });
+  logMsg(
+    socket.request.session.name,
+    socket.request.session.userID,
+    room,
+    socket.request.session.name + " has connected!"
+  );
 }
 
-function logMsg(room, msg) {
+function doesRoomExist(room) {
   let allRooms = getRooms();
-  let targetRoom = allRooms.find((r) => r.room == room);
-  let logs = targetRoom.logs;
-  logs.push(msg);
+  let arr = Object.keys(allRooms);
+  let check = arr.find((r) => r == room);
+  if (check) {
+    return true;
+  } else {
+    return false;
+  }
+}
 
-  fs.writeFileSync("rooms.json", JSON.stringify(allRooms, null, 3));
+function logMsg(name, id, room, msg) {
+  let obj = { msg: msg, name: name, userID: id };
+  let allRooms = getRooms();
+  allRooms[room].logs.push(obj);
+
+  //fs.writeFileSync("rooms.json", JSON.stringify(allRooms, null, 3));
+}
+
+function getRoomLogs(room) {
+  let allRooms = getRooms();
+  let logs = [];
+  allRooms[room].logs.forEach((obj) => logs.push(obj.msg));
+  return logs;
 }
 
 function getRooms() {
@@ -209,28 +222,34 @@ function getRooms() {
 function makeRoom(room) {
   let allRooms = getRooms();
 
-  let newRoom = { room: room, logs: [] };
-
-  allRooms.push(newRoom);
+  allRooms[room] = { users: [], logs: [] };
 
   fs.writeFileSync("rooms.json", JSON.stringify(allRooms, null, 3));
 }
 
-function getArrayOfRooms(rooms) {
-  let ArrayOfRooms = [];
+function getArrayOfRooms() {
+  let arr = [];
 
-  rooms.forEach(function (value, key) {
-    if (!value.has(key)) {
-      ArrayOfRooms.push(key);
-    }
-  });
+  let rooms = JSON.parse(fs.readFileSync("rooms.json").toString());
 
-  return ArrayOfRooms;
+  arr = Object.keys(rooms);
+
+  return arr;
 }
 
 function render(content, username) {
   let html = fs.readFileSync("template.html").toString();
   html = html.replace("--content--", content);
-  if (username) {html = html.replace("--username--", username)};
+  if (username) {
+    html = html.replace("--username--", username);
+  }
   return html;
+}
+
+function sendChatFrame(room) {
+  let frame = fs.readFileSync("chatFrame.html").toString();
+  frame = frame.replace("--room--", room);
+  frame = frame.replace("--room--", room);
+
+  return frame;
 }

@@ -1,9 +1,5 @@
 const clientSocket = io();
 
-clientSocket.on("updateUsername", function (userID) {
-  document.querySelector(".displayUserID").innerText = userID;
-});
-
 clientSocket.on("updateJoinableRooms", function (array) {
   let optionElements = document
     .getElementById("joinRoom")

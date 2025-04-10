@@ -10,7 +10,16 @@
             "msg": "bla bla bla bla bla bla",
             "name": "randomUser",
             "userID": "69420"
+         },
+         {
+            "msg": "lakaka is a gooner",
+            "name": "tjolle",
+            "userID": "123456789"
          }
       ]
+   },
+   "lakaka": {
+      "users": [],
+      "logs": []
    }
 }
