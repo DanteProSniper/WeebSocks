@@ -106,6 +106,7 @@ function handleRoomCreation() {
     .getElementById("createRoom")
     .querySelector("input")
     .value.trim();
+  if (room.length > 12) return alert("Too many characters!");
   if (!room) return;
   document.getElementById("createRoom").querySelector("input").value = "";
   clientSocket.emit("createRoomRequest", room);

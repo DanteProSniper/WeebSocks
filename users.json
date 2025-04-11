@@ -3,7 +3,9 @@
       "name": "g",
       "password": "$2b$12$mq./6L0YppJlyAWNH76iI.vXQn.uBrY67oTRl1gbk4K8uK0no5fjW",
       "id": "1744306701613",
-      "rooms": []
+      "rooms": [
+         "pingpong"
+      ]
    },
    {
       "name": "dante",
@@ -36,6 +38,32 @@
       "rooms": [
          "bombaclat",
          "poopoo"
+      ]
+   },
+   {
+      "name": "norgren",
+      "password": "$2b$12$kDXJ5rH6eNLRs/N4KXgMMO3BDb67.kEjPcJSZ37A9h3nx/mU2zHd6",
+      "id": "1744367469640",
+      "rooms": [
+         "poopoo",
+         "global",
+         "pingpong"
+      ]
+   },
+   {
+      "name": "jessica",
+      "password": "$2b$12$lpz7EzjaOWY9YZNTQgcKQuWrNp4E5vEoxrK5KzudJ9EjmQQeCj.q6",
+      "id": "1744369611256",
+      "rooms": [
+         "global"
+      ]
+   },
+   {
+      "name": "fredric",
+      "password": "$2b$12$KZqrOvlFPLvZmWAn7A9E4.W1aTvuKxbvwBIZZKEYciGB7Jr/uH9Gu",
+      "id": "1744370900534",
+      "rooms": [
+         "pingpong"
       ]
    }
 ]

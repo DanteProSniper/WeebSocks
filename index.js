@@ -1,6 +1,7 @@
 const express = require("express");
 const session = require("express-session");
 const bcrypt = require("bcryptjs");
+const escape = require("escape-html");
 const app = express();
 
 app.use(express.static("client"));
@@ -47,7 +48,7 @@ app.get("/register", (req, res) => {
 app.post("/register", register);
 
 async function register(req, res) {
-  let obj = { name: req.body.name, password: req.body.pw };
+  let obj = { name: escape(req.body.name), password: escape(req.body.pw) };
 
   let users = JSON.parse(fs.readFileSync("users.json").toString());
   let user = users.find((u) => u.name == obj.name);
@@ -79,7 +80,7 @@ app.get("/logout", (req, res) => {
 });
 
 async function login(req, res) {
-  let obj = { name: req.body.name, password: req.body.pw };
+  let obj = { name: escape(req.body.name), password: escape(req.body.pw) };
 
   let users = JSON.parse(fs.readFileSync("users.json").toString());
   let user = users.find((u) => u.name == obj.name);
@@ -149,6 +150,8 @@ function handleConnection(socket) {
   });
 
   socket.on("createRoomRequest", function (room) {
+    room = escape(room);
+    
     if (doesRoomExist(room)) {
       io.to(socket.id).emit("creationDenied");
       return;
