@@ -9,12 +9,33 @@
       "name": "dante",
       "password": "$2b$12$LjQYBzucTPERqIpvBRXtfe6TXeHOZy2mScDlKsf6WovO0bjrghlyu",
       "id": "1744307236877",
-      "rooms": []
+      "rooms": [
+         "global"
+      ]
    },
    {
       "name": "tjolle",
       "password": "$2b$12$2.Q/PAMsZn2YOjNpjVpBBuEG0f5gb4dqAg8nln6ZfBLOq/vGC8KMa",
       "id": "1744307735940",
       "rooms": []
+   },
+   {
+      "name": "viktor",
+      "password": "$2b$12$LfedThGPSyPZAqc4i62UDuDt/hPiWoSnU4mvR7yDnBzW/wq4DXvPa",
+      "id": "1744358250008",
+      "rooms": [
+         "bombaclat",
+         "poopoo",
+         "global"
+      ]
+   },
+   {
+      "name": "Huy",
+      "password": "$2b$12$R6nNu0J7li2bIgsqsKbGQe1UO535xQi.X47gfT1no7Of6xFWHfDAq",
+      "id": "1744358979167",
+      "rooms": [
+         "bombaclat",
+         "poopoo"
+      ]
    }
 ]

@@ -99,9 +99,6 @@ async function login(req, res) {
 io.on("connection", handleConnection);
 
 function handleConnection(socket) {
-  socket.join(socket.request.session.userId);
-  //console.log(io.sockets.adapter.rooms);
-
   //uppdaterar användarens select element med options
   io.to(socket.id).emit("updateJoinableRooms", getArrayOfRooms());
 

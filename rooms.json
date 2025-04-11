@@ -1,6 +1,8 @@
 {
    "global": {
-      "users": [],
+      "users": [
+         "dante"
+      ],
       "logs": [
          {
             "msg": "dante disconnected.",
@@ -51,11 +53,138 @@
             "msg": "g disconnected.",
             "name": "g",
             "userID": "1744306701613"
+         },
+         {
+            "msg": "viktor has connected!",
+            "name": "viktor",
+            "userID": "1744358250008"
+         },
+         {
+            "msg": "viktor: hejsan",
+            "name": "viktor",
+            "userID": "1744358250008"
+         },
+         {
+            "msg": "dante has connected!",
+            "name": "dante",
+            "userID": "1744307236877"
+         },
+         {
+            "msg": "viktor disconnected.",
+            "name": "viktor",
+            "userID": "1744358250008"
+         },
+         {
+            "msg": "viktor has connected!",
+            "name": "viktor",
+            "userID": "1744358250008"
+         },
+         {
+            "msg": "viktor disconnected.",
+            "name": "viktor",
+            "userID": "1744358250008"
+         },
+         {
+            "msg": "viktor has connected!",
+            "name": "viktor",
+            "userID": "1744358250008"
+         },
+         {
+            "msg": "viktor disconnected.",
+            "name": "viktor",
+            "userID": "1744358250008"
+         },
+         {
+            "msg": "viktor has connected!",
+            "name": "viktor",
+            "userID": "1744358250008"
+         },
+         {
+            "msg": "viktor: hej",
+            "name": "viktor",
+            "userID": "1744358250008"
+         },
+         {
+            "msg": "viktor has connected!",
+            "name": "viktor",
+            "userID": "1744358250008"
+         },
+         {
+            "msg": "dante has connected!",
+            "name": "dante",
+            "userID": "1744307236877"
+         },
+         {
+            "msg": "viktor disconnected.",
+            "name": "viktor",
+            "userID": "1744358250008"
+         },
+         {
+            "msg": "Huy has connected!",
+            "name": "Huy",
+            "userID": "1744358979167"
+         },
+         {
+            "msg": "Huy: hello",
+            "name": "Huy",
+            "userID": "1744358979167"
+         },
+         {
+            "msg": "dante: hello",
+            "name": "dante",
+            "userID": "1744307236877"
+         },
+         {
+            "msg": "Huy disconnected.",
+            "name": "Huy",
+            "userID": "1744358979167"
+         },
+         {
+            "msg": "dante disconnected.",
+            "name": "dante",
+            "userID": "1744307236877"
+         },
+         {
+            "msg": "dante has connected!",
+            "name": "dante",
+            "userID": "1744307236877"
+         },
+         {
+            "msg": "Huy has connected!",
+            "name": "Huy",
+            "userID": "1744358979167"
+         },
+         {
+            "msg": "Huy disconnected.",
+            "name": "Huy",
+            "userID": "1744358979167"
+         },
+         {
+            "msg": "Huy has connected!",
+            "name": "Huy",
+            "userID": "1744358979167"
+         },
+         {
+            "msg": "Huy disconnected.",
+            "name": "Huy",
+            "userID": "1744358979167"
+         },
+         {
+            "msg": "Huy has connected!",
+            "name": "Huy",
+            "userID": "1744358979167"
+         },
+         {
+            "msg": "Huy disconnected.",
+            "name": "Huy",
+            "userID": "1744358979167"
          }
       ]
    },
    "poopoo": {
-      "users": [],
+      "users": [
+         "Huy"
+      ],
       "logs": [
          {
             "msg": "dante disconnected.",
@@ -96,11 +225,43 @@
             "msg": "g disconnected.",
             "name": "g",
             "userID": "1744306701613"
+         },
+         {
+            "msg": "viktor has connected!",
+            "name": "viktor",
+            "userID": "1744358250008"
+         },
+         {
+            "msg": "viktor has connected!",
+            "name": "viktor",
+            "userID": "1744358250008"
+         },
+         {
+            "msg": "viktor disconnected.",
+            "name": "viktor",
+            "userID": "1744358250008"
+         },
+         {
+            "msg": "Huy has connected!",
+            "name": "Huy",
+            "userID": "1744358979167"
+         },
+         {
+            "msg": "Huy disconnected.",
+            "name": "Huy",
+            "userID": "1744358979167"
+         },
+         {
+            "msg": "Huy has connected!",
+            "name": "Huy",
+            "userID": "1744358979167"
          }
       ]
    },
    "bombaclat": {
-      "users": [],
+      "users": [
+         "Huy"
+      ],
       "logs": [
          {
             "msg": "dante disconnected.",
@@ -131,6 +292,46 @@
             "msg": "g disconnected.",
             "name": "g",
             "userID": "1744306701613"
+         },
+         {
+            "msg": "viktor has connected!",
+            "name": "viktor",
+            "userID": "1744358250008"
+         },
+         {
+            "msg": "viktor disconnected.",
+            "name": "viktor",
+            "userID": "1744358250008"
+         },
+         {
+            "msg": "viktor has connected!",
+            "name": "viktor",
+            "userID": "1744358250008"
+         },
+         {
+            "msg": "viktor has connected!",
+            "name": "viktor",
+            "userID": "1744358250008"
+         },
+         {
+            "msg": "viktor disconnected.",
+            "name": "viktor",
+            "userID": "1744358250008"
+         },
+         {
+            "msg": "Huy has connected!",
+            "name": "Huy",
+            "userID": "1744358979167"
+         },
+         {
+            "msg": "Huy disconnected.",
+            "name": "Huy",
+            "userID": "1744358979167"
+         },
+         {
+            "msg": "Huy has connected!",
+            "name": "Huy",
+            "userID": "1744358979167"
          }
       ]
    }
