@@ -30,7 +30,6 @@ server.listen(3400, (_) => {
 
 // this stuff är annat type shi
 const fs = require("fs");
-const { connected } = require("process");
 
 app.get("/", (req, res) => {
   if (!req.session.userID) {
