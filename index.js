@@ -3,6 +3,7 @@ const session = require("express-session");
 const bcrypt = require("bcryptjs");
 const escape = require("escape-html");
 const app = express();
+const fs = require("fs");
 
 app.use(express.static("client"));
 app.use(express.urlencoded({ extended: true }));
@@ -29,7 +30,6 @@ server.listen(3400, (_) => {
 // ovanstående är för att starta upp type shi
 
 // this stuff är annat type shi
-const fs = require("fs");
 
 app.get("/", (req, res) => {
   if (!req.session.userID) {
