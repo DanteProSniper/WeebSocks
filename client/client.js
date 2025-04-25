@@ -64,9 +64,6 @@ function moveRoom(event) {
     thisElement.style.order = Number(thisOrder) + 1;
     otherElement.style.order = thisOrder;
   }
-
-  //document.querySelector(".allChatContainer").childElementCount
-  //document.querySelector('[order="1"]')
 }
 
 clientSocket.on("chat", function (obj) {
